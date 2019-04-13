@@ -9,26 +9,24 @@ class App extends Component {
     super(props);
     // document.addEventListener("keydown", this.checkChar, false)
     this.vocabulary = ["test", "blabla", "hop", "zoup", "youpi", "coucou"];
-    this.currentWords = [];
+    this.words = [];
   }
 
   componentWillMount(){
     // TO DO : get words from API
-  }
+    setInterval(() => this.generateMonster(), 3000)
+}
 
-  getCurrentWords = (words) => {
-    this.currentWords = words;
-  }
+
+  generateMonster() {
+    this.words.push(this.vocabulary[Math.floor(Math.random() * this.vocabulary.length)])
+    console.log("parent " + this.words)
+}  
 
   checkWordTyped = (word) => {
-    for (let i = 0; i < this.currentWords.length; i++) {
-      if (word === this.currentWords[i]) {
-        console.log(this.currentWords)
-        this.currentWords.slice(i, 1)
-        console.log(this.currentWords)
-        return <Monsters vocabulary={this.vocabulary} getCurrentWords={this.getCurrentWords} monsterKilled={i} />
-      }
-    }
+    let index = this.words.indexOf(word);
+    if (index !== -1) this.words.splice(index, 1);
+    console.log(this.words)
   }
 
   render() {
@@ -39,7 +37,7 @@ class App extends Component {
         <div className="GameArea">
         {//  <Player />
         }
-          <Monsters vocabulary={this.vocabulary} getCurrentWords={this.getCurrentWords} />
+          <Monsters words={this.words} />
         </div>
       </div>
     );

@@ -4,41 +4,26 @@ import Monster from './Monster';
 class Monsters extends Component {
     constructor(props) {
         super(props);
-        const { vocabulary } = this.props;
-        this.vocabulary = vocabulary;
-        this.words = [];
-        this.state={
-            count: 0
+        this.state = {
+            words: props.words
         }
     }
 
-    componentWillReceiveProps(){
-        const { monsterKilled } = this.props;
-        this.words.slice(monsterKilled, 1)
-    }
-
-    componentWillMount() {
-        setInterval(() => this.generateMonster(), 3000)
-        const { count } = this.state;
-        setInterval(() => this.setState({ count: count + 1 }), 1000)
-        // Callback
-        const { getCurrentWords } = this.props;
-        getCurrentWords(this.words);
-    }
-
-    // Adds a monster and callback
-    generateMonster() {
-        this.words.push(this.vocabulary[Math.floor(Math.random() * this.vocabulary.length)])
-        const { getCurrentWords } = this.props;
-        getCurrentWords(this.words);
+    componentDidMount() {
+        setInterval(() => {
+            const { words } = this.props;
+            this.setState({ words })
+        }, 40)
     }
 
     render() {
+        const { words } = this.state;
+        console.log(words)
         return (
             <div className="Monsters">
                 {
-                    this.words.map((word, wordIndex) => (
-                        <Monster ref={`monsterId-${wordIndex}`} text={this.words[wordIndex]} key={wordIndex}/>
+                    words.map((word, wordIndex) => (
+                        <Monster ref={`monsterId-${wordIndex}`} text={words[wordIndex]} key={wordIndex} />
                     ))
                 }
             </div>
