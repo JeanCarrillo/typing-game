@@ -4,26 +4,25 @@ import Monster from './Monster';
 class Monsters extends Component {
     constructor(props) {
         super(props);
+        const { words } = this.props;
         this.state = {
-            words: props.words
+            words: words,
+            refresh: true,
         }
     }
 
-    componentDidMount() {
-        setInterval(() => {
-            const { words } = this.props;
-            this.setState({ words })
-        }, 40)
+    refreshMonsters() {
+        const { refresh } = this.state;
+        this.setState({ refresh: !refresh })
     }
 
     render() {
         const { words } = this.state;
-        console.log(words)
         return (
             <div className="Monsters">
                 {
                     words.map((word, wordIndex) => (
-                        <Monster ref={`monsterId-${wordIndex}`} text={words[wordIndex]} key={wordIndex} />
+                        <Monster text={words[wordIndex]} key={`monsterId-${wordIndex}`} />
                     ))
                 }
             </div>

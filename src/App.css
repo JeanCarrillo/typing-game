@@ -2,20 +2,47 @@
   text-align: center;
 }
 
-.GameArea {
+.Type {
+  position: absolute;
+  top: 58%;
+  left: 45%;
 }
-/*
+
+.GameArea {
+  background-image: url(assets/grass.jpg);
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height:100%;
+}
+
+.Score {
+  position: absolute;
+  top:5%;
+  left: 80%;
+  z-index: 2;
+  color:red;
+  text-emphasis: bold;
+}
 .Player {
+  position: absolute;
+  top:50%;
+  left: 50%;
   background-color: "blue";
   height: "50px";
   width: "50px";
 }
-*/
-.Monsters {
- display: flex;
-}
+
 .Monster {
-  animation: spin infinite 40s linear;
+  height: 10vh;
+  width: 10vh;
+  background-image: url(assets/zombie2.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  transition: 5000ms;
+  /* animation: spin infinite 40s linear; */
 }
 
 @keyframes spin {
