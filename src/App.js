@@ -21,7 +21,6 @@ class App extends Component {
     setInterval(() => this.generateMonster(), 1000)
   }
 
-
   generateMonster() {
     const { words } = this.state;
     words.push(this.vocabulary[Math.floor(Math.random() * this.vocabulary.length)]);
@@ -39,7 +38,6 @@ class App extends Component {
   }
 
   render() {
-    console.log("parent render")
     const { words, monstersKilled } = this.state;
     return (
       <div className="App">
