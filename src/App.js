@@ -18,17 +18,17 @@ class App extends Component {
   }
 
   componentWillMount() {
-    fetch('https://api.datamuse.com/words?ml=computer')
+    fetch('https://api.datamuse.com/words?ml=program')
       .then(results => results.json())
       .then((data) => {
         for (let i = 0; i < data.length; i++) {
-            if (data.hasOwnProperty(i)) {
-              this.vocabulary.push(data[i].word)
+          if (data.hasOwnProperty(i)) {
+            this.vocabulary.push(data[i].word)
           }
         }
       });
   }
-  
+
   componentDidMount() {
     this.gameRunning = setInterval(
       () => this.generateMonster(),
@@ -42,13 +42,15 @@ class App extends Component {
   }
 
   checkWordTyped = (word) => {
-    let { words, monstersKilled } = this.state;
-    let index = words.indexOf(word);
-    if (index !== -1) {
-      words[index] = "";
-      monstersKilled++
+    if (this.gameover === false) {
+      let { words, monstersKilled } = this.state;
+      let index = words.indexOf(word);
+      if (index !== -1) {
+        words[index] = "";
+        monstersKilled++
+      }
+      this.setState({ words, monstersKilled })
     }
-    this.setState({ words, monstersKilled })
   }
 
   checkGameOver = (value) => {
@@ -75,7 +77,7 @@ class App extends Component {
           }
           {
             gameover ?
-              <p style={{ top: "10%", left: "40%", fontSize: "4em", color: "red" }}>
+              <p className="GameOver">
                 GAME OVER<br></br>
                 Score: {monstersKilled}
               </p>

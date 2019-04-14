@@ -4,8 +4,6 @@
   text-align: center;
 }
 
-
-
 .GameArea {
   background-image: url(assets/dirt.jpg); 
   background-repeat: no-repeat;
@@ -17,7 +15,7 @@
 
 .Type {
   position: absolute;
-  top: 58%;
+  top: 62%;
   left: 45%;
 }
 
@@ -29,10 +27,16 @@
   color:white;
   text-emphasis: bold;
 }
+.GameOver {
 
+  top: 20%;
+  left: 40%; 
+  font-size: 4em;
+  color: red;
+}
 .Player {
   position: absolute;
-  top:45%;
+  top:50%;
   left: 49%;
   background-image: url(assets/character-left.png);
   background-size: contain;
@@ -43,7 +47,7 @@
 
 .Monster {
   position: absolute;
-  transition: 2000ms;
+  transition: 1000ms;
 }
 
 .MonsterImg {
@@ -52,14 +56,13 @@
   background-image: url(assets/zombie2.png);
   background-size: contain;
   background-repeat: no-repeat;
-  /* animation: spin infinite 40s linear; */
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.MonsterName {
+  position: absolute;
+  color:white;
+  background-color: black;
+  font-size: 110%;
+  top: 40%;
 }
+

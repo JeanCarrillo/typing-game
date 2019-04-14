@@ -5,6 +5,8 @@ class Monster extends Component {
         super(props);
         const { text } = this.props;
         this.text = text;
+        // Moving speed (setInterval): one step every this.speed ms
+        this.speed = 100;
         // Monster is coming from :
         const pos = Math.floor(Math.random() * 100);
         const comingFromSide = Math.floor(Math.random() * 4);
@@ -12,28 +14,28 @@ class Monster extends Component {
             // left
             case 1:
                 this.monsterStyle = {
-                    left: "0%",
+                    left: "-10%",
                     top: `${pos}%`,
                 };
                 break;
             // right
             case 2:
                 this.monsterStyle = {
-                    left: "100%",
+                    left: "110%",
                     top: `${pos}%`,
                 };
                 break;
             // top
             case 3:
                 this.monsterStyle = {
-                    top: "0%",
+                    top: "-10%",
                     left: `${pos}%`,
                 };
                 break;
             // bottom
             default:
                 this.monsterStyle = {
-                    top: "100%",
+                    top: "110%",
                     left: `${pos}%`,
                 };
                 break;
@@ -44,20 +46,19 @@ class Monster extends Component {
     }
 
     componentWillMount() {
-    }
-
-    componentDidMount() {
-        setInterval(() => {
+        this.gameRunning = setInterval(() => {
             this.move();
-        }, 200)
+        }, this.speed)
     }
 
     move(){
         const { checkGameOver } = this.props;
         let { monsterStyle } = this.state;
         let newMonsterStyle = {...monsterStyle}
-        let top = parseInt(newMonsterStyle.top.slice(0, -1))
-        const speed = 1;
+        let top = parseFloat(newMonsterStyle.top.slice(0, -1))
+        let left = parseFloat(newMonsterStyle.left.slice(0, -1))
+        // adjust percent per move ("steps")
+        const speed = 0.1;
         if (top < 50){
             if (top + speed > 50){
                 top = 50
@@ -69,7 +70,6 @@ class Monster extends Component {
             }
             top -= speed
         }
-        let left = parseInt(newMonsterStyle.left.slice(0, -1))
         if (left < 50){
             if (left + speed > 50){
                 left = 50
@@ -102,7 +102,7 @@ class Monster extends Component {
                 <div
                     className="MonsterImg"
                 />
-                <p style={{}}>
+                <p className="MonsterName">
                     {this.text}
                 </p>
             </div>
