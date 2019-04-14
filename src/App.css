@@ -59,6 +59,7 @@
 }
 
 .MonsterName {
+  z-index: 4;
   position: absolute;
   color:white;
   background-color: black;
