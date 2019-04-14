@@ -1,5 +1,18 @@
 .App {
+  width: 100%;
+  height: 100%;
   text-align: center;
+}
+
+
+
+.GameArea {
+  background-image: url(assets/dirt.jpg); 
+  background-repeat: no-repeat;
+  background-size:cover; 
+  position: absolute;
+  width: 100%;
+  height:100%;
 }
 
 .Type {
@@ -8,37 +21,29 @@
   left: 45%;
 }
 
-.GameArea {
-  /* background-image: url(assets/grass.jpg); 
-  background-repeat: no-repeat;
-  background-size:contain; */
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  height:100%;
-}
-
 .Score {
   position: absolute;
   top:5%;
   left: 80%;
   z-index: 2;
-  color:red;
+  color:white;
   text-emphasis: bold;
 }
+
 .Player {
   position: absolute;
-  top:50%;
-  left: 50%;
-  background-color: "blue";
-  height: "50px";
-  width: "50px";
+  top:45%;
+  left: 49%;
+  background-image: url(assets/character-left.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 10vh;
+  width: 10vh;
 }
 
 .Monster {
   position: absolute;
-  transition: 20000ms;
+  transition: 2000ms;
 }
 
 .MonsterImg {

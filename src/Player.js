@@ -4,9 +4,7 @@ class Player extends Component {
     render() {
         return (
             <div className="Player"                    
-            style={{backgroundColor: "blue",
-                    height: "50px",
-                    width: "50px",
+            style={{
             }}>
             </div>
         );

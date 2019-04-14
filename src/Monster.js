@@ -43,48 +43,52 @@ class Monster extends Component {
         }
     }
 
-    componentWillUnmount() {
-        console.log(this.text + " killed")
+    componentWillMount() {
     }
 
     componentDidMount() {
         setInterval(() => {
             this.move();
-        }, 1000)
+        }, 200)
     }
 
     move(){
+        const { checkGameOver } = this.props;
         let { monsterStyle } = this.state;
         let newMonsterStyle = {...monsterStyle}
         let top = parseInt(newMonsterStyle.top.slice(0, -1))
+        const speed = 1;
         if (top < 50){
-            if (top + 5 > 50){
+            if (top + speed > 50){
                 top = 50
             }
-            top += 5
+            top += speed
         } else {
-            if (top - 5 < 50){
+            if (top - speed < 50){
                 top = 50
             }
-            top -= 5
+            top -= speed
         }
         let left = parseInt(newMonsterStyle.left.slice(0, -1))
         if (left < 50){
-            if (left + 5 > 50){
+            if (left + speed > 50){
                 left = 50
             }
-            left += 5
+            left += speed
         } else {
-            if (left - 5 < 50){
+            if (left - speed < 50){
                 left = 50
             }
-            left -= 5
+            left -= speed
         }
         newMonsterStyle = {
             top: `${top}%`,
             left: `${left}%`,
         }
         this.setState({ monsterStyle: newMonsterStyle })
+        if ( top === 50 && left === 50){
+            checkGameOver(true);
+        }
     }
 
 
