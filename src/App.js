@@ -10,6 +10,8 @@ class App extends Component {
     super(props);
     // document.addEventListener("keydown", this.checkChar, false)
     this.vocabulary = [];
+    // Difficult setting: monster generated every this.monsterSpeedGeneration ms
+    this.monsterSpeedGeneration = 1000;
     this.state = {
       words: [],
       monstersKilled: 0,
@@ -31,8 +33,8 @@ class App extends Component {
 
   componentDidMount() {
     this.gameRunning = setInterval(
-      () => this.generateMonster(),
-      1000)
+      () => this.generateMonster()
+      , this.monsterSpeedGeneration);
   }
 
   generateMonster() {
@@ -42,22 +44,23 @@ class App extends Component {
   }
 
   checkWordTyped = (word) => {
-    if (this.gameover === false) {
+    const { gameover } = this.state;
+    if (gameover === false) {
       let { words, monstersKilled } = this.state;
       let index = words.indexOf(word);
       if (index !== -1) {
         words[index] = "";
-        monstersKilled++
+        monstersKilled++;
       }
-      this.setState({ words, monstersKilled })
+      this.setState({ words, monstersKilled });
     }
   }
 
   checkGameOver = (value) => {
     if (value) {
-      this.setState({ gameover: true })
-      clearInterval(this.gameRunning)
-    }
+      this.setState({ gameover: true });
+      clearInterval(this.gameRunning);
+    };
   }
 
   render() {
@@ -65,7 +68,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="GameArea">
-          <p className="Score">Monsters Killed : {monstersKilled}</p>
+          <p className="Score">Zombies killed : {monstersKilled}</p>
           <Type checkWordTyped={this.checkWordTyped} />
           <Player />
           {

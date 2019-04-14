@@ -28,7 +28,7 @@
   text-emphasis: bold;
 }
 .GameOver {
-
+  z-index: 5;
   top: 20%;
   left: 40%; 
   font-size: 4em;
@@ -47,7 +47,7 @@
 
 .Monster {
   position: absolute;
-  transition: 1000ms;
+  transition: 500ms;
 }
 
 .MonsterImg {
