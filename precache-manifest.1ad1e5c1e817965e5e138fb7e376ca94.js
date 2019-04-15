@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "764791b590ece5fe1d99",
+    "revision": "de3ae87860d07aea7a10",
     "url": "/typing-game/static/css/main.fd2988ce.chunk.css"
   },
   {
-    "revision": "764791b590ece5fe1d99",
-    "url": "/typing-game/static/js/main.0569e191.chunk.js"
+    "revision": "de3ae87860d07aea7a10",
+    "url": "/typing-game/static/js/main.99bdb25d.chunk.js"
   },
   {
     "revision": "cf4384a36580920bf2cb",
@@ -28,7 +28,7 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/dirt.abdbe1ad.jpg"
   },
   {
-    "revision": "59d23e0e135b4cbbb57169157658366d",
+    "revision": "c47fb5d7928aa2abf82392e49d23f5a9",
     "url": "/typing-game/index.html"
   }
 ];
