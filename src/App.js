@@ -11,28 +11,7 @@ class App extends Component {
     // TO DO: abilities, stuff to do etc. with F1, F2... keys
     // document.addEventListener("keydown", this.checkChar, false)
     //
-    // Gets vocabulary from API
-    //
-    // this.vocabulary = [];
-    // fetch('https://api.datamuse.com/words?ml=computer')
-    // .then(results => results.json())
-    // .then((data) => {
-    //   for (let i = 0; i < data.length; i++) {
-    //     if (data.hasOwnProperty(i) && data.hasOwnProperty(i) !== "") {
-    //       this.vocabulary.push(data[i].word)
-    //     }
-    //   }
-    // });
-    // Vocabulary list for my nephew ;-)
-    this.vocabulary = ["Mario", "Zelda", "Olivier", "Géraldine", "Simon", "Mamounette", 
-    "Amandine", "Philippe", "Lucille", "weekend", "guitare", "batterie", "flute", "harpe", 
-    "saxophone", "Luigi", "Yoshi","Bowser", "Jano", "lapin", "Nintendo", "jeu", "anniversaire", 
-    "ordinateur", "fleur", "Stéphanie", "raquette", "abeille", "bourdon", "frelon", "chat", 
-    "courgette", "carotte", "concombre", "ketchup", "pizza", "burger", "rythme", "baguette", 
-    "rhododendron", "chenapan","école", "devoirs", "mayonnaise", "zombie", "cerveau", "pistolet", 
-    "nerf", "funiculaire","anticonstitutionnellement", "ratatouille", "jardin", "cacahuète", 
-    "dinosaure", "Lego", "cowboy"]
-    // Difficult setting: monster generated every this.monsterSpeedGeneration ms
+    // // Difficult setting: monster generated every this.monsterSpeedGeneration ms
     this.monsterSpeedGeneration = 1000;
     this.state = {
       words: [],
@@ -41,6 +20,29 @@ class App extends Component {
     }
   }
 
+  componentWillMount() {
+    // Gets vocabulary from API
+    //
+    this.vocabulary = [];
+    fetch('https://api.datamuse.com/words?ml=computer')
+    .then(results => results.json())
+    .then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        if (data.hasOwnProperty(i) && data.hasOwnProperty(i) !== "") {
+          this.vocabulary.push(data[i].word)
+        }
+      }
+    });
+    // Vocabulary list for my nephew ;-)
+    // this.vocabulary = ["Mario", "Zelda", "Olivier", "Géraldine", "Simon", "Mamounette", 
+    // "Amandine", "Philippe", "Lucille", "weekend", "guitare", "batterie", "flute", "harpe", 
+    // "saxophone", "Luigi", "Yoshi","Bowser", "Jano", "lapin", "Nintendo", "jeu", "anniversaire", 
+    // "ordinateur", "fleur", "Stéphanie", "raquette", "abeille", "bourdon", "frelon", "chat", 
+    // "courgette", "carotte", "concombre", "ketchup", "pizza", "burger", "rythme", "baguette", 
+    // "rhododendron", "chenapan","école", "devoirs", "mayonnaise", "zombie", "cerveau", "pistolet", 
+    // "nerf", "funiculaire","anticonstitutionnellement", "ratatouille", "jardin", "cacahuète", 
+    // "dinosaure", "Lego", "cowboy"]
+  }
   componentDidMount() {
     this.gameRunning = setInterval(
       () => this.generateMonster()
