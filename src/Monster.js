@@ -62,6 +62,10 @@ class Monster extends Component {
         }, this.moveInterval);
     }
 
+    componentWillUnmount(){
+        clearInterval(this.gameRunning)
+    }
+
     move() {
         const { checkGameOver } = this.props;
         let { monsterStyle } = this.state;
