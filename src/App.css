@@ -50,13 +50,13 @@
   transition: 500ms;
 }
 
-.MonsterImg {
+/* .MonsterImg {
   height: 10vh;
   width: 10vh;
   background-image: url(assets/zombie2.png);
   background-size: contain;
   background-repeat: no-repeat;
-}
+} */
 
 .MonsterName {
   z-index: 4;

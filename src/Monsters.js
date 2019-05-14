@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Monster from './Monster';
+import zombieright from './assets/zombie2-right.png';
 
 class Monsters extends Component {
   constructor(props) {
     super(props);
     this.monstersGenerationSpeed = 1000;
-    this.monsters = []
+    this.monsters = [];
     this.state = {
       monsters: [],
     }
@@ -13,23 +14,23 @@ class Monsters extends Component {
 
   componentDidMount() {
     this.gameRunning = setInterval(() => {
-      this.refreshRender();
+      this.gameLoop();
     }, 20);
     this.generatingMonsters = setInterval(() => {
       this.generateMonster();
     }, this.monstersGenerationSpeed);
   }
 
-  refreshRender() {
+  gameLoop() {
     for (let i = 0; i < this.monsters.length; i += 1) {
       if (this.monsters[i] !== "") {
         this.monsters[i].move();
-        if ((this.monsters[i].monsterStyle.left > 160 && this.monsters[i].monsterStyle.left < 180)
-          && (this.monsters[i].monsterStyle.top > 310 && this.monsters[i].monsterStyle.top < 330)) {
-          const { checkGameOver } = this.props;
-          checkGameOver(true);
-          clearInterval(this.gameRunning);
+        if ((this.monsters[i].left > 48 && this.monsters[i].left < 52)
+          && (this.monsters[i].top > 48 && this.monsters[i].top < 52)) {
+          const { handleGameOver } = this.props;
+          handleGameOver();
           clearInterval(this.generatingMonsters);
+          clearInterval(this.gameLoop);
         }
       }
     }
@@ -54,21 +55,35 @@ class Monsters extends Component {
   killMonster = (index) => {
     this.monsters[index] = "";
     this.monstersKilled += 1;
-    const { updateScore } = this.props;
-    updateScore(1);
+    // const { updateScore } = this.props;
+    // updateScore(1);
   }
 
   render() {
+    console.log(zombieright)
     return (
       <div>
         {
           this.monsters.map((monster, index) => (
             monster !== ""
-              ? <div
-                key={`monsterImg-${index + 1}`}
-                source={require('./assets/zombie2-right.png')}
-                style={monster.monsterStyle}
-              />
+              ? <div>
+                <div
+                  key={`monsterImg-${index + 1}`}
+                  style={{
+                    position: 'absolute',
+                    zIndex: '3',
+                    left: `${monster.left}%`,
+                    top: `${monster.top}%`,
+                    width: '10vw',
+                    height: '10vw',
+                    background: `url(${zombieright})`,
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                />
+                  <p className='MonsterName'>{monster.text}</p>
+                
+              </div>
 
               : null
           ))

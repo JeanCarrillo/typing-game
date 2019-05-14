@@ -24,10 +24,10 @@ class Game extends Component {
     //
     this.vocabulary = [];
     axios.get('https://api.datamuse.com/words?ml=computer')
-    .then(data => {
-      for (let i = 0; i < data.length; i++) {
-        if (data.hasOwnProperty(i) && data.hasOwnProperty(i) !== "") {
-          this.vocabulary.push(data[i].word)
+    .then((data) => {
+      for (let i = 0; i < data.data.length; i++) {
+        if (data.data && data.data[i].word !== "") {
+          this.vocabulary.push(data.data[i].word)
         }
       }
     });
@@ -41,17 +41,7 @@ class Game extends Component {
     // "nerf", "funiculaire","anticonstitutionnellement", "ratatouille", "jardin", "cacahuète", 
     // "dinosaure", "Lego", "cowboy"]
   }
-  componentDidMount() {
-    this.gameRunning = setInterval(
-      () => this.generateMonster()
-      , this.monsterSpeedGeneration);
-  }
 
-  generateMonster() {
-    const { words } = this.state;
-    words.push(this.vocabulary[Math.floor(Math.random() * this.vocabulary.length)]);
-    this.setState({ words });
-  }
 
   checkWordTyped = (word) => {
     const { gameover } = this.state;
