@@ -71,7 +71,7 @@ class Game extends Component {
               </p>
               : null
           }
-          <p className="Score">Zombies killed : {monstersKilled}</p>
+          <p className="Score">Score : {monstersKilled}</p>
           <Type checkWordTyped={this.checkWordTyped} />
           <Player />
           <Monsters wordTyped={wordTyped} resetWordTyped={this.resetWordTyped} handleGameOver={this.handleGameOver} vocabulary={this.vocabulary} />

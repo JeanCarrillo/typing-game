@@ -7,9 +7,9 @@ body {
 }
 
 .GameArea {
-  background-image: url(assets/dirt.jpg); 
+  background-image: url(assets/dirt.jpg);
   background-repeat: no-repeat;
-  background-size:cover; 
+  background-size: cover;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -23,23 +23,26 @@ body {
 
 .Score {
   position: absolute;
-  top:5%;
+  font-size: 2vw;
+  top: 5%;
   left: 80%;
   z-index: 2;
-  color:white;
+  color: white;
   text-emphasis: bold;
 }
+
 .GameOver {
   position: absolute;
   z-index: 7;
   top: 20%;
-  left: 40%; 
+  left: 40%;
   font-size: 4vw;
   color: red;
 }
+
 .Player {
   position: absolute;
-  top:50%;
+  top: 50%;
   left: 50%;
   background-image: url(assets/character-left.png);
   background-size: contain;
@@ -54,31 +57,21 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* width: 3vw;
-  height: 5vw; */
-}
-.Monster {
-  z-index: 3;
   width: 3vw;
   height: 5vw;
+}
+
+.Monster {
+  z-index: 3;
   background-size: contain;
   background-repeat: no-repeat;
 }
-
-/* .MonsterImg {
-  height: 10vh;
-  width: 10vh;
-  background-image: url(assets/zombie2.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-} */
 
 .MonsterName {
   z-index: 4;
-  color:white;
+  color: white;
   background-color: black;
   margin: 0;
   font-size: 110%;
   text-align: center;
 }
-

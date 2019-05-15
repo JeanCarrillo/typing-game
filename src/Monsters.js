@@ -59,7 +59,8 @@ class Monsters extends Component {
       this.monsters.find((monster, i) => {
         if (monster.text === wordTyped) {
           score += 1;
-          return this.monsters.splice(i, 1);
+          return this.monsters[i].alive = false;
+          // return this.monsters.splice(i, 1);
         }
         return false;
       });
@@ -69,6 +70,7 @@ class Monsters extends Component {
     if (now - this.monstersGenerationTime > this.monstersGenerationSpeed) {
       this.monstersGenerationTime = Date.now();
       this.generateMonster();
+      this.increaseDifficulty();
     }
     // Monsters move
     for (let i = 0; i < this.monsters.length; i += 1) {
@@ -85,9 +87,9 @@ class Monsters extends Component {
     this.setState({ monsters: this.monsters })
   }
 
-  // increaseDifficulty() {
-  //   // this.monstersGenerationSpeed -= 100;
-  // }
+  increaseDifficulty() {
+    this.monstersGenerationSpeed -= 10;
+  }
 
   generateMonster() {
     const { vocabulary } = this.props;
@@ -105,25 +107,25 @@ class Monsters extends Component {
       <div>
         {
           this.monsters.map((monster, index) => (
-            monster !== ""
-              ? <div
+            <div
+              key={`monsterImg-${index + 1}`}
+              className='MonsterContainer'
+              style={{
+                left: `${monster.left}%`,
+                top: `${monster.top}%`,
+              }}>
+              <img
+                alt="Zombie"
                 key={`monsterImg-${index + 1}`}
-                className='MonsterContainer'
+                className='Monster'
+                src= {this.images[monster.img][monster.animation]}
                 style={{
-                  left: `${monster.left}%`,
-                  top: `${monster.top}%`,
-                }}>
-                <div
-                  key={`monsterImg-${index + 1}`}
-                  className='Monster'
-                  style={{
-                    transform: `scaleX(${monster.direction})`,
-                    backgroundImage: `url(${this.images[monster.img][monster.animation]})`,
-                  }}
-                />
-                <p className='MonsterName'>{monster.text}</p>
-              </div>
-              : null
+                  bottom: 0,
+                  transform: `scaleX(${monster.direction})`,
+                }}
+              />
+              <p className='MonsterName'>{monster.text}</p>
+            </div>
           ))
         }
       </div>
