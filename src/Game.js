@@ -7,13 +7,8 @@ import Type from './Type';
 class Game extends Component {
   constructor(props) {
     super(props);
-    // TO DO: abilities, stuff to do etc. with F1, F2... keys
-    // document.addEventListener("keydown", this.checkChar, false)
-    //
-    // // Difficult setting: monster generated every this.monsterSpeedGeneration ms
-    this.monsterSpeedGeneration = 1000;
     this.state = {
-      words: [],
+      wordTyped: "",
       monstersKilled: 0,
       gameover: false,
     }
@@ -46,14 +41,16 @@ class Game extends Component {
   checkWordTyped = (word) => {
     const { gameover } = this.state;
     if (gameover === false) {
-      let { words, monstersKilled } = this.state;
-      let index = words.indexOf(word);
-      if (index !== -1) {
-        words[index] = "";
-        monstersKilled++;
-      }
-      this.setState({ words, monstersKilled });
+      this.setState({ wordTyped: word });
     }
+  }
+
+  resetWordTyped = (score) => {
+    let { monstersKilled } = this.state;
+    this.setState({
+      wordTyped: '',
+      monstersKilled: monstersKilled += score,
+    });
   }
 
   handleGameOver = () => {
@@ -62,14 +59,10 @@ class Game extends Component {
   }
 
   render() {
-    const { words, monstersKilled, gameover } = this.state;
+    const { wordTyped, monstersKilled, gameover } = this.state;
     return (
       <div className="App">
         <div className="GameArea">
-          <p className="Score">Zombies killed : {monstersKilled}</p>
-          <Type checkWordTyped={this.checkWordTyped} />
-          <Player />
-          <Monsters words={words} handleGameOver={this.handleGameOver} vocabulary={this.vocabulary} />
           {
             gameover ?
               <p className="GameOver">
@@ -78,6 +71,10 @@ class Game extends Component {
               </p>
               : null
           }
+          <p className="Score">Zombies killed : {monstersKilled}</p>
+          <Type checkWordTyped={this.checkWordTyped} />
+          <Player />
+          <Monsters wordTyped={wordTyped} resetWordTyped={this.resetWordTyped} handleGameOver={this.handleGameOver} vocabulary={this.vocabulary} />
         </div>
       </div>
     );
