@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import Monster from './Monster';
-// import zombie1right from './assets/zombie1-right.png';
-// import zombie1left from './assets/zombie1-left.png';
-// import zombie2right from './assets/zombie2-right.png';
-// import zombie2left from './assets/zombie2-left.png';
+
 function importAll(r) {
   return r.keys().map(r);
 }
@@ -14,6 +11,9 @@ const zombie3 = importAll(require.context('./assets/Zombie3/animation/', false, 
 class Monsters extends Component {
   constructor(props) {
     super(props);
+    // Temp values for player, will be variables if player moves someday
+    this.playerPosX = 48;
+    this.playerPosY = 40;
     this.wordTyped = '';
     this.images = {
       'zombie1': zombie1,
@@ -57,7 +57,7 @@ class Monsters extends Component {
     if (wordTyped !== '') {
       let score = 0;
       this.monsters.find((monster, i) => {
-        if (monster.text === wordTyped) {
+        if (monster.text.toLowerCase() === wordTyped.toLowerCase()) {
           score += 1;
           return this.monsters[i].alive = false;
           // return this.monsters.splice(i, 1);
@@ -76,8 +76,8 @@ class Monsters extends Component {
     for (let i = 0; i < this.monsters.length; i += 1) {
       if (this.monsters[i] !== "") {
         this.monsters[i].move();
-        if ((this.monsters[i].left > 48 && this.monsters[i].left < 52)
-          && (this.monsters[i].top > 48 && this.monsters[i].top < 52)) {
+        if ((this.monsters[i].left > this.playerPosX - 2 && this.monsters[i].left < this.playerPosX + 2)
+          && (this.monsters[i].top > this.playerPosY - 2 && this.monsters[i].top < this.playerPosX + 2)) {
           const { handleGameOver } = this.props;
           clearInterval(this.gameRunning);
           handleGameOver();
@@ -118,13 +118,17 @@ class Monsters extends Component {
                 alt="Zombie"
                 key={`monsterImg-${index + 1}`}
                 className='Monster'
-                src= {this.images[monster.img][monster.animation]}
+                src={this.images[monster.img][monster.animation]}
                 style={{
                   bottom: 0,
                   transform: `scaleX(${monster.direction})`,
                 }}
               />
-              <p className='MonsterName'>{monster.text}</p>
+              {
+                monster.alive
+                  ? <p className='MonsterName'>{monster.text}</p>
+                  : null
+              }
             </div>
           ))
         }

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Player from './Player';
 import Monsters from './Monsters';
 import Type from './Type';
+import wordsfr from './wordsfr.js';
 
 class Game extends Component {
   constructor(props) {
     super(props);
+    this.vocabulary = wordsfr;
     this.state = {
       wordTyped: "",
       monstersKilled: 0,
@@ -17,15 +19,15 @@ class Game extends Component {
   componentWillMount() {
     // Gets vocabulary from API
     //
-    this.vocabulary = [];
-    axios.get('https://api.datamuse.com/words?ml=computer')
-    .then((data) => {
-      for (let i = 0; i < data.data.length; i++) {
-        if (data.data && data.data[i].word !== "") {
-          this.vocabulary.push(data.data[i].word)
-        }
-      }
-    });
+    // this.vocabulary = [];
+    // axios.get('https://api.datamuse.com/words?ml=computer')
+    // .then((data) => {
+    //   for (let i = 0; i < data.data.length; i++) {
+    //     if (data.data && data.data[i].word !== "") {
+    //       this.vocabulary.push(data.data[i].word)
+    //     }
+    //   }
+    // });
     // Vocabulary list for my nephew ;-)
     // this.vocabulary = ["Mario", "Zelda", "Olivier", "Géraldine", "Simon", "Mamounette", 
     // "Amandine", "Philippe", "Lucille", "weekend", "guitare", "batterie", "flute", "harpe", 

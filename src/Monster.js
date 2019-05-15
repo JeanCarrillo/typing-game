@@ -27,52 +27,72 @@ class Monster {
         this.left = pos;
         break;
     }
+    // Temp values for player, will be variables if player moves someday
+    this.playerPosX = 48;
+    this.playerPosY = 40;
     // Calculate speedX and speedY (distance per step)
-    let directionX = 50 - this.left;
-    let directionY = 50 - this.top;
+    let directionX = this.playerPosX - this.left;
+    let directionY = this.playerPosY - this.top;
     let len = Math.sqrt(directionX * directionX + directionY * directionY);
     directionX /= len;
     directionY /= len;
-    // Adjust speed here (distance per step)
-    this.speedX = directionX * 0.2;
-    this.speedY = directionY * 0.2;
+    // Determine type of monster
+    // 1: walking     2: running
+    this.type = Math.ceil(Math.random() * 2);
+    if (this.type === 1) {
+      // Walking : Adjust speed here (distance per step)
+      this.speedX = directionX * 0.1;
+      this.speedY = directionY * 0.1;
+      this.animation = 40;
+    }
+    if (this.type === 2) {
+      // Running : Adjust speed here (distance per step)
+      this.speedX = directionX * 0.2;
+      this.speedY = directionY * 0.2;
+      this.animation = 34;
+    }
     // Get image
     const randomZombie = Math.ceil(Math.random() * 3);
     this.img = 'zombie' + randomZombie;
-    this.animation = 40;
     this.animationDelay = 200;
     this.animationTime = Date.now();
     this.left > 50 ? this.direction = -1 : this.direction = 1;
   }
 
   move() {
-    const now = Date.now();
     if (this.alive) {
-      if (!(this.top > 48
-        && this.top < 52)
-        || !(this.left > 48
-          && this.left < 52)) {
+      if (!(this.top > this.playerPosY - 2
+        && this.top < this.playerPosY + 2)
+        || !(this.left > this.playerPosX - 2
+          && this.left < this.playerPosX + 2)) {
         this.top += this.speedY;
         this.left += this.speedX;
-        if (now - this.animationTime > this.animationDelay) {
-          this.animationTime = Date.now();
-          if (this.animation >= 40 && this.animation < 45) {
-            this.animation += 1;
-          } else {
-            this.animation = 40;
-          }
+        if (this.type === 1) {
+          this.animate(40, 45);
+        }
+        if (this.type === 2) {
+          this.animate(34, 39);
         }
       }
     } else {
-      if (this.animation > 15) {
-        this.animation = 7; // 14
+      if (this.animation > 13) {
+        this.animation = 7;
       }
-      if (now - this.animationTime > this.animationDelay) {
-        this.animationTime = Date.now();
-        if (this.animation >= 7 && this.animation < 14) {
-          this.animation += 1;
+      this.animate(7, 13);
+    }
+  }
+
+  animate(spriteMin, spriteMax) {
+    const now = Date.now();
+    if (now - this.animationTime > this.animationDelay) {
+      this.animationTime = Date.now();
+      if (this.animation >= spriteMin && this.animation < spriteMax) {
+        this.animation += 1;
+      } else {
+        if (this.alive) {
+          this.animation = spriteMin;
         } else {
-          this.animation = 14;
+          this.animation = spriteMax;
         }
       }
     }

@@ -23,7 +23,7 @@ class Type extends Component {
         return (
             <div className="Type">
                 <form onSubmit={this.handleSubmit}>
-                    <input type="text" autoFocus={true} value={this.state.value} onChange={this.handleChange} />
+                    <input className="TypeTextBox" type="text" autoFocus={true} value={this.state.value} onChange={this.handleChange} />
                     <input type="submit" value="Submit" style={{display:"none"}} />
                 </form>
             </div>
