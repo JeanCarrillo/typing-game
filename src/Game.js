@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
+// import Firebase from './Firebase/Firebase';
 import Player from './Player';
 import Monsters from './Monsters';
 import Type from './Type';

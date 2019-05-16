@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "firebase": "^6.0.2",
     "gh-pages": "^2.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -26,5 +27,6 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "homepage": "https://JeanCarrillo.github.io/typing-game"
+  "homepage": "https://JeanCarrillo.github.io/typing-game",
+  "devDependencies": {}
 }
