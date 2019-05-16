@@ -36,6 +36,15 @@ class Monster {
     let len = Math.sqrt(directionX * directionX + directionY * directionY);
     directionX /= len;
     directionY /= len;
+    // Determine race of monster
+    // 1: zombie      2: troll
+    const randomRace = Math.ceil(Math.random() * 2);
+    if (randomRace === 1) {
+      this.race = 'zombie';
+    }
+    if (randomRace === 2) {
+      this.race = 'troll';
+    }
     // Determine type of monster
     // 1: walking     2: running
     this.type = Math.ceil(Math.random() * 2);
@@ -53,7 +62,7 @@ class Monster {
     }
     // Get image
     const randomZombie = Math.ceil(Math.random() * 3);
-    this.img = 'zombie' + randomZombie;
+    this.img = this.race + randomZombie;
     this.animationDelay = 200;
     this.animationTime = Date.now();
     this.left > 50 ? this.direction = -1 : this.direction = 1;

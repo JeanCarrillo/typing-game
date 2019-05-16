@@ -7,6 +7,9 @@ function importAll(r) {
 const zombie1 = importAll(require.context('./assets/Zombie1/animation/', false, /\.(png)$/));
 const zombie2 = importAll(require.context('./assets/Zombie2/animation/', false, /\.(png)$/));
 const zombie3 = importAll(require.context('./assets/Zombie3/animation/', false, /\.(png)$/));
+const troll1 = importAll(require.context('./assets/Troll1/animation/', false, /\.(png)$/));
+const troll2 = importAll(require.context('./assets/Troll2/animation/', false, /\.(png)$/));
+const troll3 = importAll(require.context('./assets/Troll3/animation/', false, /\.(png)$/));
 
 class Monsters extends Component {
   constructor(props) {
@@ -19,6 +22,9 @@ class Monsters extends Component {
       'zombie1': zombie1,
       'zombie2': zombie2,
       'zombie3': zombie3,
+      'troll1': troll1,
+      'troll2': troll2,
+      'troll3': troll3,
     };
     this.monstersGenerationTime = Date.now();
     this.monstersGenerationSpeed = 2000;
