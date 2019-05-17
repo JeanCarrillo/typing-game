@@ -27,7 +27,7 @@ class Monsters extends Component {
       'troll3': troll3,
     };
     this.monstersGenerationTime = Date.now();
-    this.monstersGenerationSpeed = 2000;
+    this.monstersGenerationSpeed = 3000;
     this.monsters = [];
     this.state = {
       monsters: [],
@@ -98,9 +98,9 @@ class Monsters extends Component {
   }
 
   generateMonster() {
-    const { vocabulary } = this.props;
-    if (vocabulary && vocabulary.length > 0) {
-      const randomText = vocabulary[Math.floor(Math.random() * vocabulary.length)]
+    const { words } = this.props;
+    if (words && words.length > 0) {
+      const randomText = words[Math.floor(Math.random() * words.length)]
       if (randomText !== "") {
         let monster = new Monster(randomText);
         this.monsters.push(monster);
