@@ -14,6 +14,8 @@ const troll3 = importAll(require.context('./assets/Troll3/animation/', false, /\
 class Monsters extends Component {
   constructor(props) {
     super(props);
+    this.minWordLength = 3;
+    this.maxWordLength = this.minWordLength + 4;
     // Temp values for player, will be variables if player moves someday
     this.playerPosX = 48;
     this.playerPosY = 40;
@@ -98,14 +100,28 @@ class Monsters extends Component {
   }
 
   generateMonster() {
-    const { words } = this.props;
-    if (words && words.length > 0) {
-      const randomText = words[Math.floor(Math.random() * words.length)]
-      if (randomText !== "") {
-        let monster = new Monster(randomText);
-        this.monsters.push(monster);
-      }
+    let rdmType = Math.ceil(Math.random() * 100);
+    if (rdmType < 80) {
+      rdmType = "zombie";
+    } else {
+      rdmType = "troll";
     }
+    if (rdmType === "zombie") {
+      this.text = this.getWord();
+    }
+    if (rdmType === "troll") {
+      this.text = this.getWord() + ' ' + this.getWord() + ' ' + this.getWord();
+    }
+    if (this.text && this.text !== "") {
+      let monster = new Monster(this.text, rdmType);
+      this.monsters.push(monster);
+    }
+  }
+
+  getWord() {
+    const { words } = this.props;
+    const rdmLength = Math.floor(Math.random() * this.maxWordLength) + this.minWordLength;
+    return words[rdmLength][Math.floor(Math.random() * words[rdmLength].length)];
   }
 
   render() {

@@ -80,3 +80,9 @@ body {
   font-size: 1em;
   text-align: center;
 }
+
+.Scores {
+  position: absolute;
+  z-index: 5;
+  color: white;
+}

@@ -1,5 +1,5 @@
 class Monster {
-  constructor(text) {
+  constructor(text, type) {
     this.text = text;
     this.alive = true;
     // Monster is coming from :
@@ -37,24 +37,17 @@ class Monster {
     directionX /= len;
     directionY /= len;
     // Determine race of monster
-    // 1: zombie      2: troll
-    const randomRace = Math.ceil(Math.random() * 2);
-    if (randomRace === 1) {
-      this.race = 'zombie';
-    }
-    if (randomRace === 2) {
-      this.race = 'troll';
-    }
-    // Determine type of monster
+    this.type = type;
+    // Determine movingStatus
     // 1: walking     2: running
-    this.type = Math.ceil(Math.random() * 2);
-    if (this.type === 1) {
+    this.movingStatus = Math.ceil(Math.random() * 2);
+    if (this.movingStatus === 1) {
       // Walking : Adjust speed here (distance per step)
       this.speedX = directionX * 0.1;
       this.speedY = directionY * 0.1;
       this.animation = 40;
     }
-    if (this.type === 2) {
+    if (this.movingStatus === 2) {
       // Running : Adjust speed here (distance per step)
       this.speedX = directionX * 0.2;
       this.speedY = directionY * 0.2;
@@ -62,7 +55,7 @@ class Monster {
     }
     // Get image
     const randomZombie = Math.ceil(Math.random() * 3);
-    this.img = this.race + randomZombie;
+    this.img = this.type + randomZombie;
     this.animationDelay = 200;
     this.animationTime = Date.now();
     this.left > 50 ? this.direction = -1 : this.direction = 1;
@@ -76,10 +69,10 @@ class Monster {
           && this.left < this.playerPosX + 2)) {
         this.top += this.speedY;
         this.left += this.speedX;
-        if (this.type === 1) {
+        if (this.movingStatus === 1) {
           this.animate(40, 45);
         }
-        if (this.type === 2) {
+        if (this.movingStatus === 2) {
           this.animate(34, 39);
         }
       }

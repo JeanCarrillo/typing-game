@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 import Player from './Player';
 import Monsters from './Monsters';
+import GameOver from './GameOver';
 import Type from './Type';
 import wordsfr from './wordsfr.js';
 
@@ -24,29 +25,29 @@ class Game extends Component {
       gameover: false,
     }
   }
-  
-  componentWillMount() {
-    // Gets vocabulary from API
-    //
-    // this.vocabulary = [];
-    // axios.get('https://api.datamuse.com/words?ml=computer')
-    // .then((data) => {
-    //   for (let i = 0; i < data.data.length; i++) {
-    //     if (data.data && data.data[i].word !== "") {
-    //       this.vocabulary.push(data.data[i].word)
-    //     }
-    //   }
-    // });
-    // Vocabulary list for my nephew ;-)
-    // this.vocabulary = ["Mario", "Zelda", "Olivier", "Géraldine", "Simon", "Mamounette", 
-    // "Amandine", "Philippe", "Lucille", "weekend", "guitare", "batterie", "flute", "harpe", 
-    // "saxophone", "Luigi", "Yoshi","Bowser", "Jano", "lapin", "Nintendo", "jeu", "anniversaire", 
-    // "ordinateur", "fleur", "Stéphanie", "raquette", "abeille", "bourdon", "frelon", "chat", 
-    // "courgette", "carotte", "concombre", "ketchup", "pizza", "burger", "rythme", "baguette", 
-    // "rhododendron", "chenapan","école", "devoirs", "mayonnaise", "zombie", "cerveau", "pistolet", 
-    // "nerf", "funiculaire","anticonstitutionnellement", "ratatouille", "jardin", "cacahuète", 
-    // "dinosaure", "Lego", "cowboy"]
-  }
+
+  // componentWillMount() {
+  // //  Gets vocabulary from API
+
+  //   this.vocabulary = [];
+  //   axios.get('https://api.datamuse.com/words?ml=computer')
+  //   .then((data) => {
+  //     for (let i = 0; i < data.data.length; i++) {
+  //       if (data.data && data.data[i].word !== "") {
+  //         this.vocabulary.push(data.data[i].word)
+  //       }
+  //     }
+  //   });
+  // // Vocabulary list for my nephew ;-)
+  // // this.vocabulary = ["Mario", "Zelda", "Olivier", "Géraldine", "Simon", "Mamounette", 
+  // // "Amandine", "Philippe", "Lucille", "weekend", "guitare", "batterie", "flute", "harpe", 
+  // // "saxophone", "Luigi", "Yoshi","Bowser", "Jano", "lapin", "Nintendo", "jeu", "anniversaire", 
+  // // "ordinateur", "fleur", "Stéphanie", "raquette", "abeille", "bourdon", "frelon", "chat", 
+  // // "courgette", "carotte", "concombre", "ketchup", "pizza", "burger", "rythme", "baguette", 
+  // // "rhododendron", "chenapan","école", "devoirs", "mayonnaise", "zombie", "cerveau", "pistolet", 
+  // // "nerf", "funiculaire","anticonstitutionnellement", "ratatouille", "jardin", "cacahuète", 
+  // //  "dinosaure", "Lego", "cowboy"]
+  // }
 
 
   checkWordTyped = (word) => {
@@ -76,14 +77,11 @@ class Game extends Component {
         <div className="GameArea">
           {
             gameover ?
-              <p className="GameOver">
-                GAME OVER<br></br>
-                Score: {monstersKilled}
-              </p>
-              : null
+              <GameOver score={monstersKilled}/>
+              : <Type checkWordTyped={this.checkWordTyped} />
           }
           <p className="Score">Score : {monstersKilled}</p>
-          <Type checkWordTyped={this.checkWordTyped} />
+
           <Player />
           <Monsters wordTyped={wordTyped} resetWordTyped={this.resetWordTyped} handleGameOver={this.handleGameOver} words={this.words} />
         </div>
