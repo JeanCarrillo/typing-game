@@ -70,7 +70,8 @@ class GameLoop extends Component {
 
   gameLoop() {
     const now = Date.now();
-    this.killMonster();
+    this.shoot();
+    this.checkCollisions();
     // Monster generation call
     if (now - this.monstersGenerationTime > this.monstersGenerationSpeed) {
       this.monstersGenerationTime = Date.now();
@@ -104,30 +105,45 @@ class GameLoop extends Component {
     })
   }
 
-  killMonster() {
-    const { updateScore } = this.props;
+  checkCollisions() {
+    for (let i = 0; i < this.projectiles.length; i += 1) {
+      for (let j = 0; j < this.monsters.length; j += 1) {
+        if (this.monsters[j].alive === true) {
+          if ((this.projectiles[i].top > this.monsters[j].top - 2 && this.projectiles[i].top < this.monsters[j].top + 2)
+            && (this.projectiles[i].left > this.monsters[j].left - 2 && this.projectiles[i].left < this.monsters[j].left + 2)) {
+            const score = 1;
+            const { updateScore } = this.props;
+            updateScore(score);
+            this.projectiles.splice(i, 1)
+            this.monsters[j].text.splice(0, 1);
+            if (this.monsters[j].text.length === 0) {
+              this.monsters[j].updateStatus('dying');
+              return this.monsters[j].alive = false;
+            } else {
+              return this.monsters[j].updateStatus('hurt');
+            }
+          }
+        }
+      }
+    }
+  }
+
+  onCollision() {
+  }
+
+  shoot() {
     const { word } = this.state;
     if (word !== '') {
-      let score = 0;
       this.monsters.find((monster, i) => {
         for (let j = 0; j < monster.text.length; j += 1) {
           if (monster.text[j].toLowerCase() === word.toLowerCase()) {
             this.setState({ word: "" });
-            score += 1;
             let projectile = new Projectile('arrow', monster.left, monster.top);
             this.projectiles.push(projectile);
-            monster.text.splice(j, 1);
-            if (monster.text.length === 0) {
-              this.monsters[i].updateStatus('dying');
-              return this.monsters[i].alive = false;
-            } else {
-              return this.monsters[i].updateStatus('hurt');
-            }
           }
         }
         return false;
       });
-      updateScore(score);
     }
   }
 
@@ -237,7 +253,7 @@ class GameLoop extends Component {
               style={{
                 top: `${projectile.top}%`,
                 left: `${projectile.left}%`,
-                transform: `rotate(${-projectile.angle}rad)`,
+                transform: `rotate(${-projectile.angle}deg)`,
               }}>
               <img
                 className='ProjectileImg'
