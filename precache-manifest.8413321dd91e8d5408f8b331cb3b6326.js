@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/Walk5.98a5c949.png"
   },
   {
-    "revision": "a9543ac2837f98799037",
+    "revision": "61899ae3a9272d02f71a",
     "url": "/typing-game/static/css/main.7691e1e5.chunk.css"
   },
   {
@@ -600,8 +600,8 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/Walk4.73683421.png"
   },
   {
-    "revision": "a9543ac2837f98799037",
-    "url": "/typing-game/static/js/main.7bbfa0f1.chunk.js"
+    "revision": "61899ae3a9272d02f71a",
+    "url": "/typing-game/static/js/main.eda842ef.chunk.js"
   },
   {
     "revision": "2babeaae7651fe2ea9865c56fe80c712",
@@ -1200,7 +1200,7 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/background4.76973623.jpg"
   },
   {
-    "revision": "6b336053696517ad8fdf900612ccc99b",
+    "revision": "730e054db33e282f9fefd82566154f6d",
     "url": "/typing-game/index.html"
   }
 ];
