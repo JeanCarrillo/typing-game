@@ -8,7 +8,8 @@ class Player {
           spriteMax: 9,
         },
         Shot: {
-
+          spriteMin: 0,
+          spriteMax: 10,
         }
       }
     }

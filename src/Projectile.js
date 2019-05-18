@@ -6,7 +6,6 @@ class Projectile {
         speed: 1,
       }
     }
-    console.log(dirX, dirY)
     // Temp values
     this.left = 50;
     this.top = 42;
@@ -21,12 +20,9 @@ class Projectile {
     this.speedY = directionY * this.types[this.type].speed;
     const screenW = window.innerWidth;
     const screenH = window.innerHeight;
-    console.log(screenW, screenH)
     const directionX2 = this.mmap(directionX, -1, 1, -screenW / 2, screenW / 2);
     const directionY2 = this.mmap(directionY, -1, 1, screenH / 2, -screenH / 2);
     this.angle = Math.atan2(directionY2, directionX2) * 180 / Math.PI;
-    console.log(this.angle)
-    // this.angle = Math.atan2(directionX, directionY) * 180 / Math.PI;
   }
 
   move() {
