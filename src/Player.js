@@ -1,12 +1,23 @@
 
 class Player {
   constructor(){
+    this.types = {
+      archer: {
+        Stand: {
+          spriteMin: 0,
+          spriteMax: 9,
+        },
+        Shot: {
+
+        }
+      }
+    }
     this.type = "archer";
     this.status = "Stand";
     this.img = this.type + this.status;
     this.posX = 50;
     this.posY = 39;
-    this.animation = 1;
+    this.animation = this.types[this.type][this.status].spriteMin;
     this.spriteMin= 0;
     this.spriteMax= 9;
     this.alive = true;
@@ -14,7 +25,7 @@ class Player {
     this.animationTime = Date.now();
   }
   action() {
-    this.animate(this.spriteMin, this.spriteMax);
+    this.animate(this.types[this.type][this.status].spriteMin, this.types[this.type][this.status].spriteMax);
   }
 
   animate(spriteMin, spriteMax) {
