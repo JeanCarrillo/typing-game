@@ -18,6 +18,8 @@ class Projectile {
     directionY /= len;
     this.speedX = directionX * this.types[this.type].speed;
     this.speedY = directionY * this.types[this.type].speed;
+    this.angle = Math.acos(directionX);
+    console.log(this.angle)
   }
 
   move() {

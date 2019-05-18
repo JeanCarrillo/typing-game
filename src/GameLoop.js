@@ -237,6 +237,7 @@ class GameLoop extends Component {
               style={{
                 top: `${projectile.top}%`,
                 left: `${projectile.left}%`,
+                transform: `rotate(${-projectile.angle}rad)`,
               }}>
               <img
                 className='ProjectileImg'

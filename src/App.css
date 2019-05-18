@@ -33,7 +33,7 @@ body {
   position: absolute;
   font-size: 2vw;
   top: 1vw;
-  left: 85vw;
+  left: 85%;
   z-index: 2;
   color: white;
   text-emphasis: bold;
@@ -44,8 +44,8 @@ body {
   font-family: 'Creepster', cursive;
   position: absolute;
   z-index: 7;
-  top: 8vw;
-  left: 40vw;
+  top: 10%;
+  left: 40%;
   font-size: 5vw;
   color: rgba(232, 29, 29);
   text-shadow: 0.5vw 0.5vw black;
