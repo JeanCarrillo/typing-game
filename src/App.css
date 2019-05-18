@@ -15,11 +15,8 @@ body {
 }
 
 .Type {
-  position: absolute;
-  margin-left: -7.5vw;
-  top: 50%;
-  left: 50%;
-  text-align: center;
+  margin-left: -4vw;
+  top: 10vh;
 }
 
 .TypeTextBox {

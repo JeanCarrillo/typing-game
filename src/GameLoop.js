@@ -9,6 +9,7 @@ function importAll(r) {
 }
 
 const archerStand = importAll(require.context('./assets/Archer/Stand/', false, /\.(png)$/));
+const archerShot = importAll(require.context('./assets/Archer/Shot/', false, /\.(png)$/));
 const zombie1 = importAll(require.context('./assets/Zombie1/animation/', false, /\.(png)$/));
 const zombie2 = importAll(require.context('./assets/Zombie2/animation/', false, /\.(png)$/));
 const zombie3 = importAll(require.context('./assets/Zombie3/animation/', false, /\.(png)$/));
@@ -26,6 +27,9 @@ class GameLoop extends Component {
     this.players.push(player);
     this.wordTyped = '';
     this.images = {
+      'archer': {
+        'shot': archerShot,
+      },
       'archerStand': archerStand,
       'zombie1': zombie1,
       'zombie2': zombie2,
@@ -84,6 +88,7 @@ class GameLoop extends Component {
         this.monsters[i].move();
         if ((this.monsters[i].left > this.players[0].posX - 2 && this.monsters[i].left < this.players[0].posX + 2)
           && (this.monsters[i].top > this.players[0].posY - 2 && this.monsters[i].top < this.players[0].posY + 2)) {
+          this.players[0].alive = false;
           const { handleGameOver } = this.props;
           clearInterval(this.gameRunning);
           handleGameOver();
@@ -126,9 +131,6 @@ class GameLoop extends Component {
         }
       }
     }
-  }
-
-  onCollision() {
   }
 
   shoot() {
@@ -205,6 +207,16 @@ class GameLoop extends Component {
                 style={{
                 }}
               />
+              {
+                player.alive
+              ? <div className="Type">
+                <form onSubmit={this.handleSubmit}>
+                  <input className="TypeTextBox" type="text" autoFocus={true} value={this.state.word} onChange={this.handleChange} />
+                  <input type="submit" value="Submit" style={{ display: "none" }} />
+                </form>
+              </div>
+              : null
+              }
             </div>
           ))
         }
@@ -267,12 +279,6 @@ class GameLoop extends Component {
             </div>
           ))
         }
-        <div className="Type">
-          <form onSubmit={this.handleSubmit}>
-            <input className="TypeTextBox" type="text" autoFocus={true} value={this.state.word} onChange={this.handleChange} />
-            <input type="submit" value="Submit" style={{ display: "none" }} />
-          </form>
-        </div>
       </div >
     );
   }

@@ -6,6 +6,7 @@ class Projectile {
         speed: 1,
       }
     }
+    console.log(dirX, dirY)
     // Temp values
     this.left = 50;
     this.top = 42;
@@ -18,11 +19,14 @@ class Projectile {
     directionY /= len;
     this.speedX = directionX * this.types[this.type].speed;
     this.speedY = directionY * this.types[this.type].speed;
-    // const dirX2 = this.mmap(dirX, 0, 100, -1, 1);
-    // const dirY2 = this.mmap(dirY, 0, 100, -1, 1);
-    // this.angle = Math.atan2(dirY2, dirX2);
-    this.angle = Math.atan2(directionX,directionY) * 180 / Math.PI;
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    console.log(screenW, screenH)
+    const directionX2 = this.mmap(directionX, -1, 1, -screenW / 2, screenW / 2);
+    const directionY2 = this.mmap(directionY, -1, 1, screenH / 2, -screenH / 2);
+    this.angle = Math.atan2(directionY2, directionX2) * 180 / Math.PI;
     console.log(this.angle)
+    // this.angle = Math.atan2(directionX, directionY) * 180 / Math.PI;
   }
 
   move() {
@@ -30,9 +34,9 @@ class Projectile {
     this.left += this.speedX;
   }
 
-  // mmap(x, in_min, in_max, out_min, out_max) {
-  //   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-  // }
+  mmap(x, in_min, in_max, out_min, out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+  }
 
 }
 
