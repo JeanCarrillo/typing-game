@@ -1,19 +1,19 @@
 self.__precacheManifest = [
   {
-    "revision": "98a5c949d51f2d9f0d874db3f33f0201",
-    "url": "/typing-game/static/media/Walk5.98a5c949.png"
+    "revision": "649f9dcb3108523a803f83d04e3bd6a4",
+    "url": "/typing-game/static/media/Run9.649f9dcb.png"
   },
   {
-    "revision": "046af6e01d6a27f47215",
-    "url": "/typing-game/static/css/main.7691e1e5.chunk.css"
+    "revision": "eab890d97917e8edd334",
+    "url": "/typing-game/static/css/main.dbcef059.chunk.css"
   },
   {
     "revision": "cf4384a36580920bf2cb",
     "url": "/typing-game/static/js/runtime~main.8bbbebfd.js"
   },
   {
-    "revision": "060da354f9d10a79655a",
-    "url": "/typing-game/static/js/2.ffecdb88.chunk.js"
+    "revision": "c7f3af806b15a394efe0",
+    "url": "/typing-game/static/js/2.e35ddef7.chunk.js"
   },
   {
     "revision": "f81e9a48fe282d9126905b45b09e48ba",
@@ -54,6 +54,46 @@ self.__precacheManifest = [
   {
     "revision": "f81e9a48fe282d9126905b45b09e48ba",
     "url": "/typing-game/static/media/9.f81e9a48.png"
+  },
+  {
+    "revision": "aaeea57f0ac42f5a2b7687bb221180a4",
+    "url": "/typing-game/static/media/0.aaeea57f.png"
+  },
+  {
+    "revision": "11ada8fa7ba6209dbb6051a734e123c1",
+    "url": "/typing-game/static/media/1.11ada8fa.png"
+  },
+  {
+    "revision": "e785f04b517949e59b14e8d751ad3f3e",
+    "url": "/typing-game/static/media/2.e785f04b.png"
+  },
+  {
+    "revision": "f368cca04f44597f654c40c7e356b566",
+    "url": "/typing-game/static/media/3.f368cca0.png"
+  },
+  {
+    "revision": "62158e9a989e8c7cc187da5c406046f6",
+    "url": "/typing-game/static/media/4.62158e9a.png"
+  },
+  {
+    "revision": "9c03a4b6bf0045ea012ff2806685065b",
+    "url": "/typing-game/static/media/5.9c03a4b6.png"
+  },
+  {
+    "revision": "27204d06939a9239a761b645ca411ae0",
+    "url": "/typing-game/static/media/6.27204d06.png"
+  },
+  {
+    "revision": "84215450eef87e3c0f0222c13d9f5c6b",
+    "url": "/typing-game/static/media/7.84215450.png"
+  },
+  {
+    "revision": "d994903bad5104a8c0571703207c7a9f",
+    "url": "/typing-game/static/media/8.d994903b.png"
+  },
+  {
+    "revision": "908614ea67bf27525b8b2e298d74880a",
+    "url": "/typing-game/static/media/9.908614ea.png"
   },
   {
     "revision": "c45b13fbf34a2cbb0618d03fe2067745",
@@ -580,8 +620,8 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/Run8.e4b5ea6d.png"
   },
   {
-    "revision": "649f9dcb3108523a803f83d04e3bd6a4",
-    "url": "/typing-game/static/media/Run9.649f9dcb.png"
+    "revision": "eab890d97917e8edd334",
+    "url": "/typing-game/static/js/main.a3958402.chunk.js"
   },
   {
     "revision": "8e724190b5f939e4dbb775bb39a84eb0",
@@ -600,8 +640,8 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/Walk4.73683421.png"
   },
   {
-    "revision": "046af6e01d6a27f47215",
-    "url": "/typing-game/static/js/main.2bf372bc.chunk.js"
+    "revision": "98a5c949d51f2d9f0d874db3f33f0201",
+    "url": "/typing-game/static/media/Walk5.98a5c949.png"
   },
   {
     "revision": "2babeaae7651fe2ea9865c56fe80c712",
@@ -1200,7 +1240,7 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/background4.76973623.jpg"
   },
   {
-    "revision": "a4e16263bf4a4a49284360b9b2c02a71",
+    "revision": "ce0434b93e2fc636c49232b6958758c3",
     "url": "/typing-game/index.html"
   }
 ];
