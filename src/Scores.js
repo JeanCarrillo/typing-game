@@ -27,11 +27,11 @@ class Scores extends Component {
     const { scores } = this.state;
     return (
       <div className="Scores">
-        <p>Highscores : </p>
+        <h1>Highscores : </h1>
         {
           scores
           ? scores.map((score, index) => (
-            <p key={`scoreId-${index + 1}`}>{score.name} : {score.score}</p>
+            <p key={`scoreId-${index + 1}`}><span className="highScoreName">{score.name}</span> : <span className="highScoreNum">{score.score}</span></p>
           ))
           : null
         }

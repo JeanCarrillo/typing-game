@@ -1,5 +1,50 @@
 class Monster {
   constructor(text, type) {
+    this.types = {
+      zombie: {
+        sizeX: 5,
+        sizeY: 5,
+        animationDelay: 200,
+        walking: {
+          speed: 0.1,
+          spriteMin: 40,
+          spriteMax: 45,
+        },
+        running: {
+          speed: 0.2,
+          spriteMin: 34,
+          spriteMax: 39,
+        },
+        dying: {
+          spriteMin: 7,
+          spriteMax: 13,
+        }
+      },
+      troll: {
+        sizeX: 15,
+        sizeY: 15,
+        animationDelay: 200,
+        walking: {
+          speed: 0.05,
+          spriteMin: 42,
+          spriteMax: 48,
+        },
+        // running: {
+        //   speed: 0.1,
+        //   spriteMin: 34,
+        //   spriteMax: 39,
+        // },
+        hurt: {
+          speed: 0,
+          spriteMin: 14,
+          spriteMax: 20,
+        },
+        dying: {
+          spriteMin: 7,
+          spriteMax: 13,
+        }
+      }
+    }
     this.text = text;
     this.alive = true;
     // Monster is coming from :
@@ -8,28 +53,28 @@ class Monster {
     switch (comingFromSide) {
       // left
       case 1:
-        this.left = -20;
+        this.left = -10;
         this.top = pos;
         break;
       // right
       case 2:
-        this.left = 120;
+        this.left = 110;
         this.top = pos;
         break;
       // top
       case 3:
-        this.top = -20;
+        this.top = -10;
         this.left = pos;
         break;
       // bottom
       default:
-        this.top = 120;
+        this.top = 110;
         this.left = pos;
         break;
     }
     // Temp values for player, will be variables if player moves someday
-    this.playerPosX = 48;
-    this.playerPosY = 40;
+    this.playerPosX = 50;
+    this.playerPosY = 39;
     // Calculate speedX and speedY (distance per step)
     let directionX = this.playerPosX - this.left;
     let directionY = this.playerPosY - this.top;
@@ -40,48 +85,40 @@ class Monster {
     this.type = type;
     // Determine movingStatus
     // 1: walking     2: running
-    this.movingStatus = Math.ceil(Math.random() * 2);
-    if (this.movingStatus === 1) {
-      // Walking : Adjust speed here (distance per step)
-      this.speedX = directionX * 0.1;
-      this.speedY = directionY * 0.1;
-      this.animation = 40;
+    if (this.types[this.type].hasOwnProperty('running')) {
+      this.status = Math.ceil(Math.random() * 3);
+      if (this.status === 3) {
+        this.status = 'running';
+      } else {
+        this.status = 'walking';
+      }
+    } else {
+      this.status = 'walking'
     }
-    if (this.movingStatus === 2) {
-      // Running : Adjust speed here (distance per step)
-      this.speedX = directionX * 0.2;
-      this.speedY = directionY * 0.2;
-      this.animation = 34;
-    }
+    this.speedX = directionX * this.types[this.type][this.status].speed;
+    this.speedY = directionY * this.types[this.type][this.status].speed;
+    this.animation = this.types[this.type][this.status].spriteMin;
     // Get image
-    const randomZombie = Math.ceil(Math.random() * 3);
-    this.img = this.type + randomZombie;
-    this.animationDelay = 200;
+    this.sizeX = this.types[this.type].sizeX;
+    this.sizeY = this.types[this.type].sizeY;
+    const randomImg = Math.ceil(Math.random() * 3);
+    this.img = this.type + randomImg;
+    this.animationDelay = this.types[this.type].animationDelay;
     this.animationTime = Date.now();
     this.left > 50 ? this.direction = -1 : this.direction = 1;
   }
 
   move() {
-    if (this.alive) {
+    if (this.status !== 'dying' && this.status !== 'hurt') {
       if (!(this.top > this.playerPosY - 2
         && this.top < this.playerPosY + 2)
         || !(this.left > this.playerPosX - 2
           && this.left < this.playerPosX + 2)) {
         this.top += this.speedY;
         this.left += this.speedX;
-        if (this.movingStatus === 1) {
-          this.animate(40, 45);
-        }
-        if (this.movingStatus === 2) {
-          this.animate(34, 39);
-        }
       }
-    } else {
-      if (this.animation > 13) {
-        this.animation = 7;
-      }
-      this.animate(7, 13);
     }
+    this.animate(this.types[this.type][this.status].spriteMin, this.types[this.type][this.status].spriteMax);
   }
 
   animate(spriteMin, spriteMax) {
@@ -92,12 +129,22 @@ class Monster {
         this.animation += 1;
       } else {
         if (this.alive) {
-          this.animation = spriteMin;
+          // if monster is no longer hurt > back to walking
+          if (this.status === 'hurt' && this.animation >= spriteMax) {
+            this.updateStatus('walking');
+          } else {
+            this.animation = spriteMin;
+          }
         } else {
           this.animation = spriteMax;
         }
       }
     }
+  }
+
+  updateStatus(status) {
+    this.status = status;
+    this.animation = this.types[this.type][this.status].spriteMin;
   }
 }
 

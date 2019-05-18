@@ -2568,7 +2568,7 @@ Bell
 belle
 belle-fille
 belles
-belle-sur
+belle-soeur
 belvédère
 ben
 bénédiction
@@ -2768,7 +2768,7 @@ blâme
 blâmer
 blanc
 blanc de chaux
-blanc d'uf
+blanc d'oeuf
 Blanchard
 blanche
 blanches
@@ -2838,7 +2838,7 @@ bocage
 bocal
 bock
 Boeing
-buf
+boeuf
 Bogart
 Bogota
 boire
@@ -2865,7 +2865,7 @@ bombardiers
 bombe
 bombes
 bon
-bon cur
+bon coeur
 bon grain
 bonace
 Bonaparte
@@ -3990,7 +3990,7 @@ chauve
 chauvinisme
 chaux
 chef
-chef-d'uvre
+chef-d'oeuvre
 chefs
 cheikh
 chelem
@@ -4098,7 +4098,7 @@ chlore
 choc
 chocolat
 chocs
-chur
+choeur
 choir
 choisi
 choisie
@@ -4378,7 +4378,7 @@ codes
 coefficient
 coéquipier
 coercition
-cur
+coeur
 coexistence
 coexistent
 coffre
@@ -5065,7 +5065,7 @@ consistant
 consiste
 consisté
 consisterait
-consur
+consoeur
 consolation
 consoler
 consolidation
@@ -5254,7 +5254,7 @@ contre
 contrebalancer
 contrebande
 contrecarrer
-contrecur
+contrecoeur
 contrecoup
 contredire
 contredit
@@ -5499,7 +5499,7 @@ coup de griffe
 coup de pied
 coup de vent
 coup d'Etat
-coup d'il
+coup d'oeil
 coup monté
 coupable
 coupables
@@ -5696,7 +5696,7 @@ creux
 crevasse
 crevasser
 crevé
-crève-cur
+crève-coeur
 crever
 cri
 criant
@@ -6697,7 +6697,7 @@ désireux
 désirs
 désobéissance
 désobstruer
-désuvré
+désoeuvré
 désolation
 désolé
 désoler
@@ -7603,9 +7603,9 @@ ecclésiastique
 éclore
 écluse
 écluser
-écurant
-écurement
-écurer
+écoeurant
+écoeurement
+écoeurer
 école
 écoles
 écolier
@@ -9611,7 +9611,7 @@ fluidité
 flux
 flux de
 Foch
-ftus
+foetus
 foi
 foie
 foin
@@ -10962,7 +10962,7 @@ horreurs
 horrible
 horripiler
 hors
-hors d'uvre
+hors d'oeuvre
 horst
 hospitalier
 hospitalière
@@ -13415,8 +13415,8 @@ Mann
 manne
 mannequin
 mannequins
-manuvre
-manuvres
+manoeuvre
+manoeuvres
 manouche
 manquaient
 manquait
@@ -14158,9 +14158,9 @@ modifier
 modifiés
 modo
 module
-mlle
+moelle
 moelleux
-murs
+moeurs
 Mogadiscio
 Mohamed
 Mohammed
@@ -14737,8 +14737,8 @@ nocturne
 nocturnes
 Noël
 Noëlle
-nud
-nuds
+noeud
+noeuds
 noir
 noire
 noires
@@ -15028,14 +15028,14 @@ odeurs
 Odile
 odorant
 odorat
-il
-illère
-sophage
-uf
-ufs
-uvre
-uvrer
-uvres
+oeil
+oeillère
+oesophage
+oeuf
+oeufs
+oeuvre
+oeuvrer
+oeuvres
 offensant
 offense
 offenser
@@ -17773,8 +17773,8 @@ rampante
 rampe
 ramper
 rancard
-rancur
-rancurs
+rancoeur
+rancoeurs
 rançon
 rancunier
 randonnée
@@ -20079,8 +20079,8 @@ sociologues
 socio-politique
 socle
 sodium
-sur
-surs
+soeur
+soeurs
 Soffite
 Soffites
 Sofia
@@ -22508,8 +22508,8 @@ vocifération
 vociférations
 vociférer
 vodka
-vu
-vux
+voeu
+voeux
 Vogel
 vogue
 voguer

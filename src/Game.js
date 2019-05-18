@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
-import Player from './Player';
-import Monsters from './Monsters';
+import GameLoop from './GameLoop';
 import GameOver from './GameOver';
 import Type from './Type';
 import wordsfr from './wordsfr.js';
@@ -77,13 +76,13 @@ class Game extends Component {
         <div className="GameArea">
           {
             gameover ?
-              <GameOver score={monstersKilled}/>
-              : <Type checkWordTyped={this.checkWordTyped} />
+              <GameOver score={monstersKilled} />
+              : <div>
+                <Type checkWordTyped={this.checkWordTyped} />
+                <p className="Score">Score : {monstersKilled}</p>
+              </div>
           }
-          <p className="Score">Score : {monstersKilled}</p>
-
-          <Player />
-          <Monsters wordTyped={wordTyped} resetWordTyped={this.resetWordTyped} handleGameOver={this.handleGameOver} words={this.words} />
+          <GameLoop wordTyped={wordTyped} resetWordTyped={this.resetWordTyped} handleGameOver={this.handleGameOver} words={this.words} />
         </div>
       </div>
     );

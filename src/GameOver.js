@@ -12,20 +12,25 @@ class GameOver extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({ name: event.target.value });
+    const { name } = this.state;
+    if (name.length < 12) {
+      this.setState({ name: event.target.value });
+    }
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     const { name } = this.state;
     const { score } = this.props;
-    const database = firebase.database().ref();
-    const scores = database.child("scores");
-    scores.push({
-      "name": `${name}`,
-      "score": `${score}`,
-    });
-    this.setState({ name: "", done: true })
+    if (name.length >= 1) {
+      const database = firebase.database().ref();
+      const scores = database.child("scores");
+      scores.push({
+        "name": `${name}`,
+        "score": `${score}`,
+      });
+      this.setState({ name: "", done: true });
+    }
   }
 
   render() {
@@ -40,13 +45,15 @@ class GameOver extends Component {
         </p>
         {
           !done
-            ? <form onSubmit={this.handleSubmit}>
-              <label>
-                Enter your nickname :
-              <input className="TypeTextBox" type="text" autoFocus={true} value={this.state.name} onChange={this.handleChange} />
-                <input type="submit" value="Submit" />
-              </label>
-            </form>
+            ? <div className="EnterName">
+              <form onSubmit={this.handleSubmit}>
+                <label>
+                  Enter your nickname :
+                  <input className="TypeTextBox" type="text" autoFocus={true} value={this.state.name} onChange={this.handleChange} />
+                  <input type="submit" value="Submit" style={{ display: "none" }} />
+                </label>
+              </form>
+            </div>
             : null
         }
       </div>

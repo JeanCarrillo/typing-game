@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Creepster&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Volkhov&display=swap');
 body {
   overflow: hidden;
   text-align: center;
@@ -16,15 +18,18 @@ body {
   position: absolute;
   margin-left: -7.5vw;
   top: 50%;
-  left:50%;
+  left: 50%;
   text-align: center;
 }
 
 .TypeTextBox {
-  width:15vw;
+  font-family: 'Volkhov', serif;
+  width: 15vw;
+  text-align: center;
 }
 
 .Score {
+  font-family: 'Volkhov', serif;
   position: absolute;
   font-size: 2vw;
   top: 1vw;
@@ -32,26 +37,30 @@ body {
   z-index: 2;
   color: white;
   text-emphasis: bold;
+  text-shadow: 0.2vw 0.2vw black;
 }
 
 .GameOver {
+  font-family: 'Creepster', cursive;
   position: absolute;
   z-index: 7;
   top: 8vw;
-  left: 35vw;
+  left: 40vw;
   font-size: 5vw;
-  color: red;
+  color: rgba(232, 29, 29);
+  text-shadow: 0.5vw 0.5vw black;
 }
 
-.Player {
+.PlayerContainer {
   position: absolute;
-  top: 40%;
-  left: 48%;
-  background-image: url(assets/character-left.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 5vw;
-  width: 5vw;
+  max-width: 8vw;
+  max-height: 8vw;
+}
+
+.PlayerImg {
+  max-width: 100%;
+  height: auto;
+  bottom: 0;
 }
 
 .MonsterContainer {
@@ -65,24 +74,75 @@ body {
 }
 
 .Monster {
-  max-width: 5vw;
-  max-height: 5vw;
+  bottom: 0;
+  /* max-width: 5vw;
+  max-height: 5vw; */
   z-index: 3;
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .MonsterName {
+  font-family: 'Volkhov', serif;
   z-index: 4;
   color: white;
   background-color: black;
   margin: 0;
   font-size: 1em;
   text-align: center;
+  padding: 0.1vw;
+  padding-left: 0.2vw;
+  padding-right: 0.2vw;
 }
 
 .Scores {
+  font-family: 'Volkhov', serif;
+  font-size: 1em;
+  color: black;
   position: absolute;
-  z-index: 5;
-  color: white;
+  left: 75%;
+  top: 10%;
+  width: 20%;
+  margin: auto;
+  border-radius: 1vw;
+  background-color: white;
+  border: 0.01vw solid #d0cccc;
+  box-shadow: 0.3vw 0.3vw black;
+  z-index: 7;
+}
+
+.Scores p {
+  font-size: 2.5vh;
+  margin: 0.2vw;
+}
+
+.Scores h1 {
+  font-size: 4vh;
+  font-family: 'Volkhov', serif;
+  margin: 1vw;
+  text-decoration: underline;
+}
+
+.EnterName {
+  font-family: 'Volkhov', serif;
+  font-size: 2vw;
+  color: rgba(232, 29, 29);
+  position: absolute;
+  left: 40vw;
+  top: 28vw;
+  width: 20vw;
+  margin: auto;
+  padding-top: 0.1vw;
+  padding-bottom: 1vw;
+  border-radius: 1vw;
+  background-color: white;
+  border: 0.01vw solid #d0cccc;
+  box-shadow: 0.3vw 0.3vw black;
+  z-index: 7;
+}
+
+.EnterName input {
+  height: 3vw;
+  font-size: 2vw;
+  text-align: center;
 }

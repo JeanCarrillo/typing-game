@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Monster from './Monster';
+import Player from './Player';
 
 function importAll(r) {
   return r.keys().map(r);
 }
+const archerStand = importAll(require.context('./assets/Archer/Stand/', false, /\.(png)$/));
 const zombie1 = importAll(require.context('./assets/Zombie1/animation/', false, /\.(png)$/));
 const zombie2 = importAll(require.context('./assets/Zombie2/animation/', false, /\.(png)$/));
 const zombie3 = importAll(require.context('./assets/Zombie3/animation/', false, /\.(png)$/));
@@ -16,11 +18,12 @@ class Monsters extends Component {
     super(props);
     this.minWordLength = 3;
     this.maxWordLength = this.minWordLength + 4;
-    // Temp values for player, will be variables if player moves someday
-    this.playerPosX = 48;
-    this.playerPosY = 40;
+    this.players = [];
+    const player = new Player();
+    this.players.push(player);
     this.wordTyped = '';
     this.images = {
+      'archerStand': archerStand,
       'zombie1': zombie1,
       'zombie2': zombie2,
       'zombie3': zombie3,
@@ -33,12 +36,13 @@ class Monsters extends Component {
     this.monsters = [];
     this.state = {
       monsters: [],
+      players: this.players,
     }
   }
 
   componentDidMount() {
     this.gameRunning = setInterval(() =>
-      this.gameLoop(), 50);
+      this.gameLoop(), 40);
   }
 
   // componentWillReceiveProps(prevProps, prevState) {
@@ -60,20 +64,7 @@ class Monsters extends Component {
 
   gameLoop() {
     const now = Date.now();
-    // Kill monster
-    const { wordTyped, resetWordTyped } = this.props;
-    if (wordTyped !== '') {
-      let score = 0;
-      this.monsters.find((monster, i) => {
-        if (monster.text.toLowerCase() === wordTyped.toLowerCase()) {
-          score += 1;
-          return this.monsters[i].alive = false;
-          // return this.monsters.splice(i, 1);
-        }
-        return false;
-      });
-      resetWordTyped(score);
-    }
+    this.killMonster();
     // Monster generation call
     if (now - this.monstersGenerationTime > this.monstersGenerationSpeed) {
       this.monstersGenerationTime = Date.now();
@@ -84,15 +75,45 @@ class Monsters extends Component {
     for (let i = 0; i < this.monsters.length; i += 1) {
       if (this.monsters[i] !== "") {
         this.monsters[i].move();
-        if ((this.monsters[i].left > this.playerPosX - 2 && this.monsters[i].left < this.playerPosX + 2)
-          && (this.monsters[i].top > this.playerPosY - 2 && this.monsters[i].top < this.playerPosX + 2)) {
+        if ((this.monsters[i].left > this.players[0].posX - 2 && this.monsters[i].left < this.players[0].posX + 2)
+          && (this.monsters[i].top > this.players[0].posY - 2 && this.monsters[i].top < this.players[0].posY + 2)) {
           const { handleGameOver } = this.props;
           clearInterval(this.gameRunning);
           handleGameOver();
         }
       }
     }
-    this.setState({ monsters: this.monsters })
+    // Players actions
+    for (let i = 0; i < this.players.length; i += 1) {
+      this.players[i].action();
+    }
+    this.setState({
+      monsters: this.monsters,
+      players: this.players,
+    })
+  }
+
+  killMonster() {
+    const { wordTyped, resetWordTyped } = this.props;
+    if (wordTyped !== '') {
+      let score = 0;
+      this.monsters.find((monster, i) => {
+        for (let j = 0; j < monster.text.length; j += 1) {
+          if (monster.text[j].toLowerCase() === wordTyped) {
+            score += 1;
+            monster.text.splice(j, 1);
+            if (monster.text.length === 0) {
+              this.monsters[i].updateStatus('dying');
+              return this.monsters[i].alive = false;
+            } else {
+              return this.monsters[i].updateStatus('hurt');
+            }
+          }
+        }
+        return false;
+      });
+      resetWordTyped(score);
+    }
   }
 
   increaseDifficulty() {
@@ -106,14 +127,15 @@ class Monsters extends Component {
     } else {
       rdmType = "troll";
     }
+    let text = [];
     if (rdmType === "zombie") {
-      this.text = this.getWord();
+      text = [this.getWord()];
     }
     if (rdmType === "troll") {
-      this.text = this.getWord() + ' ' + this.getWord() + ' ' + this.getWord();
+      text = [this.getWord(), this.getWord(), this.getWord()];
     }
-    if (this.text && this.text !== "") {
-      let monster = new Monster(this.text, rdmType);
+    if (text) {
+      let monster = new Monster(text, rdmType);
       this.monsters.push(monster);
     }
   }
@@ -128,6 +150,24 @@ class Monsters extends Component {
     return (
       <div>
         {
+          this.players.map((player, index) => (
+            <div
+              className='PlayerContainer'
+              style={{
+                top: `${player.posY - 4}%`,
+                left: `${player.posX - 4}%`,
+              }}>
+              <img
+                className='PlayerImg'
+                alt='Player'
+                src={this.images[player.img][player.animation]}
+                style={{
+                }}
+              />
+            </div>
+          ))
+        }
+        {
           this.monsters.map((monster, index) => (
             <div
               key={`monsterImg-${index + 1}`}
@@ -137,24 +177,34 @@ class Monsters extends Component {
                 top: `${monster.top}%`,
               }}>
               <img
-                alt="Zombie"
+                alt="Monster"
                 key={`monsterImg-${index + 1}`}
                 className='Monster'
                 src={this.images[monster.img][monster.animation]}
                 style={{
-                  bottom: 0,
+                  maxWidth: `${monster.sizeX}vw`,
+                  maxHeight: `${monster.sizeY}vw`,
                   transform: `scaleX(${monster.direction})`,
                 }}
               />
               {
                 monster.alive
-                  ? <p className='MonsterName'>{monster.text}</p>
+                  ? <p className='MonsterName'>
+                    {
+                      monster.text.map((word, i) => (
+                        <span key={`wordIndex-${i + 1}`}>
+                          {word}
+                          {' '}
+                        </span>
+                      ))
+                    }
+                  </p>
                   : null
               }
             </div>
           ))
         }
-      </div>
+      </div >
     );
   }
 }
