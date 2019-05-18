@@ -63,6 +63,16 @@ body {
   bottom: 0;
 }
 
+.ProjectileContainer {
+  position: absolute;
+  width: 3vw;
+  height: 3vw;
+}
+
+.ProjectileImg {
+  z-index: 2;
+}
+
 .MonsterContainer {
   position: absolute;
   display: flex;

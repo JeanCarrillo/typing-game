@@ -13,7 +13,7 @@ class GameOver extends Component {
 
   handleChange = (event) => {
     const { name } = this.state;
-    if (name.length < 12) {
+    if (name.length <= 12) {
       this.setState({ name: event.target.value });
     }
   }

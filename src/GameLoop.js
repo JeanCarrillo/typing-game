@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import Monster from './Monster';
 import Player from './Player';
+import Projectile from './Projectile';
+import arrow from './assets/Archer/Arrow.png';
 
 function importAll(r) {
   return r.keys().map(r);
 }
+
 const archerStand = importAll(require.context('./assets/Archer/Stand/', false, /\.(png)$/));
 const zombie1 = importAll(require.context('./assets/Zombie1/animation/', false, /\.(png)$/));
 const zombie2 = importAll(require.context('./assets/Zombie2/animation/', false, /\.(png)$/));
@@ -13,7 +16,7 @@ const troll1 = importAll(require.context('./assets/Troll1/animation/', false, /\
 const troll2 = importAll(require.context('./assets/Troll2/animation/', false, /\.(png)$/));
 const troll3 = importAll(require.context('./assets/Troll3/animation/', false, /\.(png)$/));
 
-class Monsters extends Component {
+class GameLoop extends Component {
   constructor(props) {
     super(props);
     this.minWordLength = 3;
@@ -34,9 +37,12 @@ class Monsters extends Component {
     this.monstersGenerationTime = Date.now();
     this.monstersGenerationSpeed = 3000;
     this.monsters = [];
+    this.projectiles = [];
     this.state = {
       monsters: [],
       players: this.players,
+      projectiles: [],
+      word: '',
     }
   }
 
@@ -87,20 +93,29 @@ class Monsters extends Component {
     for (let i = 0; i < this.players.length; i += 1) {
       this.players[i].action();
     }
+    // Projectiles move
+    for (let i = 0; i < this.projectiles.length; i += 1) {
+      this.projectiles[i].move();
+    }
     this.setState({
       monsters: this.monsters,
       players: this.players,
+      projectiles: this.projectiles,
     })
   }
 
   killMonster() {
-    const { wordTyped, resetWordTyped } = this.props;
-    if (wordTyped !== '') {
+    const { updateScore } = this.props;
+    const { word } = this.state;
+    if (word !== '') {
       let score = 0;
       this.monsters.find((monster, i) => {
         for (let j = 0; j < monster.text.length; j += 1) {
-          if (monster.text[j].toLowerCase() === wordTyped) {
+          if (monster.text[j].toLowerCase() === word.toLowerCase()) {
+            this.setState({ word: "" });
             score += 1;
+            let projectile = new Projectile('arrow', monster.left, monster.top);
+            this.projectiles.push(projectile);
             monster.text.splice(j, 1);
             if (monster.text.length === 0) {
               this.monsters[i].updateStatus('dying');
@@ -112,7 +127,7 @@ class Monsters extends Component {
         }
         return false;
       });
-      resetWordTyped(score);
+      updateScore(score);
     }
   }
 
@@ -146,12 +161,22 @@ class Monsters extends Component {
     return words[rdmLength][Math.floor(Math.random() * words[rdmLength].length)];
   }
 
+  handleChange = (event) => {
+    this.setState({ word: event.target.value });
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.setState({ word: "" });
+  }
+
   render() {
     return (
       <div>
         {
-          this.players.map((player, index) => (
+          this.players.map((player, i) => (
             <div
+              key={`player-${i + 1}`}
               className='PlayerContainer'
               style={{
                 top: `${player.posY - 4}%`,
@@ -168,9 +193,9 @@ class Monsters extends Component {
           ))
         }
         {
-          this.monsters.map((monster, index) => (
+          this.monsters.map((monster, i) => (
             <div
-              key={`monsterImg-${index + 1}`}
+              key={`monsterImg-${i + 1}`}
               className='MonsterContainer'
               style={{
                 left: `${monster.left}%`,
@@ -178,7 +203,7 @@ class Monsters extends Component {
               }}>
               <img
                 alt="Monster"
-                key={`monsterImg-${index + 1}`}
+                key={`monsterImg-${i + 1}`}
                 className='Monster'
                 src={this.images[monster.img][monster.animation]}
                 style={{
@@ -204,9 +229,36 @@ class Monsters extends Component {
             </div>
           ))
         }
+        {
+          this.projectiles.map((projectile, i) => (
+            <div
+              key={`projectile-${i + 1}`}
+              className='ProjectileContainer'
+              style={{
+                top: `${projectile.top}%`,
+                left: `${projectile.left}%`,
+              }}>
+              <img
+                className='ProjectileImg'
+                alt='Projectile'
+                src={arrow}
+                style={{
+                  maxWidth: '2vw',
+                  maxHeight: '2vw',
+                }}
+              />
+            </div>
+          ))
+        }
+        <div className="Type">
+          <form onSubmit={this.handleSubmit}>
+            <input className="TypeTextBox" type="text" autoFocus={true} value={this.state.word} onChange={this.handleChange} />
+            <input type="submit" value="Submit" style={{ display: "none" }} />
+          </form>
+        </div>
       </div >
     );
   }
 }
 
-export default Monsters;
+export default GameLoop;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 import GameLoop from './GameLoop';
 import GameOver from './GameOver';
-import Type from './Type';
+// import Type from './Type';
 import wordsfr from './wordsfr.js';
 
 class Game extends Component {
@@ -49,17 +49,16 @@ class Game extends Component {
   // }
 
 
-  checkWordTyped = (word) => {
-    const { gameover } = this.state;
-    if (gameover === false) {
-      this.setState({ wordTyped: word });
-    }
-  }
+  // checkWordTyped = (word) => {
+  //   const { gameover } = this.state;
+  //   if (gameover === false) {
+  //     this.setState({ wordTyped: word });
+  //   }
+  // }
 
-  resetWordTyped = (score) => {
+  updateScore = (score) => {
     let { monstersKilled } = this.state;
     this.setState({
-      wordTyped: '',
       monstersKilled: monstersKilled += score,
     });
   }
@@ -70,7 +69,7 @@ class Game extends Component {
   }
 
   render() {
-    const { wordTyped, monstersKilled, gameover } = this.state;
+    const { monstersKilled, gameover } = this.state;
     return (
       <div className="App">
         <div className="GameArea">
@@ -78,11 +77,10 @@ class Game extends Component {
             gameover ?
               <GameOver score={monstersKilled} />
               : <div>
-                <Type checkWordTyped={this.checkWordTyped} />
                 <p className="Score">Score : {monstersKilled}</p>
               </div>
           }
-          <GameLoop wordTyped={wordTyped} resetWordTyped={this.resetWordTyped} handleGameOver={this.handleGameOver} words={this.words} />
+          <GameLoop updateScore={this.updateScore} handleGameOver={this.handleGameOver} words={this.words} />
         </div>
       </div>
     );
