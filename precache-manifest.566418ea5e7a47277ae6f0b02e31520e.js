@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/Run9.649f9dcb.png"
   },
   {
-    "revision": "eab890d97917e8edd334",
+    "revision": "ec0ed8dfc5fd5e0783af",
     "url": "/typing-game/static/css/main.dbcef059.chunk.css"
   },
   {
@@ -620,8 +620,8 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/Run8.e4b5ea6d.png"
   },
   {
-    "revision": "eab890d97917e8edd334",
-    "url": "/typing-game/static/js/main.a3958402.chunk.js"
+    "revision": "ec0ed8dfc5fd5e0783af",
+    "url": "/typing-game/static/js/main.421d1cbd.chunk.js"
   },
   {
     "revision": "8e724190b5f939e4dbb775bb39a84eb0",
@@ -1240,7 +1240,7 @@ self.__precacheManifest = [
     "url": "/typing-game/static/media/background4.76973623.jpg"
   },
   {
-    "revision": "ce0434b93e2fc636c49232b6958758c3",
+    "revision": "8b3f8c9e9af2eb78ac0a65bbe8fa0416",
     "url": "/typing-game/index.html"
   }
 ];
