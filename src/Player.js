@@ -1,30 +1,29 @@
 
 class Player {
-  constructor(){
+  constructor(type){
     this.types = {
       archer: {
-        Stand: {
+        standing: {
           spriteMin: 0,
           spriteMax: 9,
         },
-        Shot: {
+        shooting: {
           spriteMin: 0,
-          spriteMax: 10,
+          spriteMax: 9,
         }
       }
     }
-    this.type = "archer";
-    this.status = "Stand";
-    this.img = this.type + this.status;
+    this.alive = true;
+    this.type = type;
+    this.status = "standing";
     this.posX = 50;
     this.posY = 39;
     this.animation = this.types[this.type][this.status].spriteMin;
-    this.spriteMin= 0;
-    this.spriteMax= 9;
-    this.alive = true;
     this.animationDelay = 50;
     this.animationTime = Date.now();
+    this.direction = 1;
   }
+
   action() {
     this.animate(this.types[this.type][this.status].spriteMin, this.types[this.type][this.status].spriteMax);
   }
@@ -38,8 +37,8 @@ class Player {
       } else {
         if (this.alive) {
           // if monster is no longer hurt > back to walking
-          if (this.status === 'hurt' && this.animation >= spriteMax) {
-            this.updateStatus('walking');
+          if (this.status === 'shooting' && this.animation >= spriteMax) {
+            this.updateStatus('standing');
           } else {
             this.animation = spriteMin;
           }
@@ -47,6 +46,14 @@ class Player {
           this.animation = spriteMax;
         }
       }
+    }
+  }
+
+  updateStatus(status, direction) {
+    this.status = status;
+    this.animation = this.types[this.type][this.status].spriteMin;
+    if (direction) {
+      this.direction = direction;
     }
   }
 }

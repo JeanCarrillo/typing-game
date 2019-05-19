@@ -23,14 +23,16 @@ class GameLoop extends Component {
     this.minWordLength = 3;
     this.maxWordLength = this.minWordLength + 4;
     this.players = [];
-    const player = new Player();
+    const player = new Player('archer');
     this.players.push(player);
-    this.wordTyped = '';
+    this.monsters = [];
+    this.projectiles = [];
+    this.word = '';
     this.images = {
       'archer': {
-        'shot': archerShot,
+        'shooting': archerShot,
+        'standing': archerStand,
       },
-      'archerStand': archerStand,
       'zombie1': zombie1,
       'zombie2': zombie2,
       'zombie3': zombie3,
@@ -40,12 +42,10 @@ class GameLoop extends Component {
     };
     this.monstersGenerationTime = Date.now();
     this.monstersGenerationSpeed = 3000;
-    this.monsters = [];
-    this.projectiles = [];
     this.state = {
-      monsters: [],
-      players: this.players,
-      projectiles: [],
+      // players: this.players,
+      // monsters: [],
+      // projectiles: [],
       word: '',
     }
   }
@@ -54,23 +54,6 @@ class GameLoop extends Component {
     this.gameRunning = setInterval(() =>
       this.gameLoop(), 40);
   }
-
-  // componentWillReceiveProps(prevProps, prevState) {
-  //   // const { wordTyped } = this.props;
-  //   // this.monsters.find((monster, i) =>{
-  //   //   if (monster.text === wordTyped){
-  //   //     return this.monsters[i] = "";
-  //   //   }
-  //   //   return false;
-  //   // })
-  // }
-
-  // killMonster = (index) => {
-  //   this.monsters[index] = "";
-  //   this.monstersKilled += 1;
-  //   // const { updateScore } = this.props;
-  //   // updateScore(1);
-  // }
 
   gameLoop() {
     const now = Date.now();
@@ -104,22 +87,24 @@ class GameLoop extends Component {
       this.projectiles[i].move();
     }
     this.setState({
-      monsters: this.monsters,
-      players: this.players,
-      projectiles: this.projectiles,
-    })
+      refresh: true
+      // monsters: this.monsters,
+      // players: this.players,
+      // projectiles: this.projectiles,
+    });
   }
 
   checkCollisions() {
     for (let i = 0; i < this.projectiles.length; i += 1) {
       for (let j = 0; j < this.monsters.length; j += 1) {
+        // Collision with alive monster
         if (this.monsters[j].alive === true) {
           if ((this.projectiles[i].top > this.monsters[j].top - 2 && this.projectiles[i].top < this.monsters[j].top + 2)
             && (this.projectiles[i].left > this.monsters[j].left - 2 && this.projectiles[i].left < this.monsters[j].left + 2)) {
             const score = 1;
             const { updateScore } = this.props;
             updateScore(score);
-            this.projectiles.splice(i, 1)
+            this.projectiles.splice(i, 1);
             this.monsters[j].text.splice(0, 1);
             if (this.monsters[j].text.length === 0) {
               this.monsters[j].updateStatus('dying');
@@ -129,6 +114,13 @@ class GameLoop extends Component {
             }
           }
         }
+      }
+      // Projectile out of map
+      if (this.projectiles[i].left < -10
+        || this.projectiles[i].left > 110
+        || this.projectiles[i].top < -10
+        || this.projectiles[i].top > 110) {
+        this.projectiles.splice(i, 1);
       }
     }
   }
@@ -140,6 +132,9 @@ class GameLoop extends Component {
         for (let j = 0; j < monster.text.length; j += 1) {
           if (monster.text[j].toLowerCase() === word.toLowerCase()) {
             this.setState({ word: "" });
+            let direction;
+            monster.left > 50 ? direction = 1 : direction = -1;
+            this.players[0].updateStatus("shooting", direction);
             let projectile = new Projectile('arrow', monster.left, monster.top);
             this.projectiles.push(projectile);
           }
@@ -189,6 +184,7 @@ class GameLoop extends Component {
   }
 
   render() {
+    const { word } = this.state;
     return (
       <div>
         {
@@ -203,19 +199,20 @@ class GameLoop extends Component {
               <img
                 className='PlayerImg'
                 alt='Player'
-                src={this.images[player.img][player.animation]}
+                src={this.images[player.type][player.status][player.animation]}
                 style={{
+                  transform: `scaleX(${player.direction})`,
                 }}
               />
               {
                 player.alive
-              ? <div className="Type">
-                <form onSubmit={this.handleSubmit}>
-                  <input className="TypeTextBox" type="text" autoFocus={true} value={this.state.word} onChange={this.handleChange} />
-                  <input type="submit" value="Submit" style={{ display: "none" }} />
-                </form>
-              </div>
-              : null
+                  ? <div className="Type">
+                    <form onSubmit={this.handleSubmit}>
+                      <input className="TypeTextBox" type="text" autoFocus={true} value={word} onChange={this.handleChange} />
+                      <input type="submit" value="Submit" style={{ display: "none" }} />
+                    </form>
+                  </div>
+                  : null
               }
             </div>
           ))
