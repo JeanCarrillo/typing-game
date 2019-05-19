@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Game from './Game';
 import './App.css';
+import { FirebaseContext } from './Firebase';
 
 class App extends Component {
   constructor(props) {
@@ -9,17 +10,12 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    // base.syncState('/', {
-    //   context: this,
-    //   state: 'scores'
-    // });
-  }
-
   render() {
     return (
       <div className="App">
-        <Game />
+        <FirebaseContext.Consumer>
+          {firebase => <Game firebase={firebase} />}
+        </FirebaseContext.Consumer>
       </div>
     );
   }

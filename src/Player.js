@@ -36,7 +36,6 @@ class Player {
         this.animation += 1;
       } else {
         if (this.alive) {
-          // if monster is no longer hurt > back to walking
           if (this.status === 'shooting' && this.animation >= spriteMax) {
             this.updateStatus('standing');
           } else {

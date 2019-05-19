@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 import GameLoop from './GameLoop';
 import GameOver from './GameOver';
+import { FirebaseContext } from './Firebase';
 // import Type from './Type';
 import wordsfr from './wordsfr.js';
 
@@ -75,7 +76,9 @@ class Game extends Component {
         <div className="GameArea">
           {
             gameover ?
-              <GameOver score={monstersKilled} />
+              <FirebaseContext.Consumer>
+                {firebase => <GameOver score={monstersKilled} firebase={firebase} />}
+              </FirebaseContext.Consumer>
               : <div>
                 <p className="Score">Score : {monstersKilled}</p>
               </div>
