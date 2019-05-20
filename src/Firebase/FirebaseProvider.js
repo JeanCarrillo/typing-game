@@ -23,40 +23,53 @@ class FirebaseProvider extends Component {
     this.lobbiesRef = firebase.database().ref('lobbies');
     this.db = firebase.database().ref();
     // const lobbies = this.db.child("lobbies");           
-    // lobbies.remove("LfLYOawkejWLmpEx2MX")
     // lobbies.push({
-      //   "name": `test`,
-      //   "players": `1`,
-      // });
-      this.state = {
-        scores: [],
+    //   'name': 'Room 5',
+    //   'players': '[]',
+    //   'messages': '{}',
+    //   'game':'{}',
+    // });
+    this.state = {
+      scores: [],
       lobbies: [],
       currentGame: {},
       registerScore: this.registerScore,
       removeLobby: this.removeLobby,
+      createLobby: this.createLobby,
     }
   }
-  
+
   componentWillMount() {
     this.scoresRef.on('value', (snapshot) => {
       this.setState({ scores: Object.values(snapshot.val()) });
     });
-    this.lobbiesRef.on('value', (snapshot =>{
-      this.setState({ lobbies: snapshot.val()})
+    this.lobbiesRef.on('value', (snapshot => {
+      this.setState({ lobbies: snapshot.val() })
     }));
   }
 
+  createLobby = (name) => {
+    if (name.length > 0) {
+      const lobbies = this.db.child('lobbies');
+      lobbies.push({
+        'name': `${name}`,
+        'players': [`${name}`],
+        'messages': {},
+      });
+    }
+  }
+
   removeLobby = (key) => {
-    // const lobbies = this.db.child("lobbies");
-    this.lobbiesRef.remove(`${key}`)
+    // const lobbies = this.db.child('lobbies');
+    this.lobbiesRef.child(`${key}`).remove();
   }
 
   registerScore = (name, score) => {
     if (name.length >= 1) {
-      const scores = this.db.child("scores");
+      const scores = this.db.child('scores');
       scores.push({
-        "name": `${name}`,
-        "score": `${score}`,
+        'name': `${name}`,
+        'score': `${score}`,
       });
     }
   }
@@ -64,11 +77,7 @@ class FirebaseProvider extends Component {
   render() {
     const { children } = this.props;
     return (
-      <FirebaseContext.Provider
-      value={this.state}
-      registerScore={this.registerScore}
-      removeLobby={this.removeLobby}
-      >
+      <FirebaseContext.Provider value={this.state} >
         {children}
       </FirebaseContext.Provider>
     )

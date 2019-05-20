@@ -5,17 +5,17 @@ class Home extends Component {
   render() {
     return (
       <div className="Home">
-        <Link to="/solo">
+        <Link to="/Solo">
           <button>
             Solo
           </button>
         </Link>
-        <Link to="/multiplayer">
+        <Link to="/Multiplayer">
           <button>
             Multiplayer
           </button>
         </Link>
-        <Link to="/scores">
+        <Link to="/Scores">
           <button>
             Scores
           </button>
