@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Scores from './Scores';
-import { FirebaseContext } from './Firebase';
+import withFirebaseContext from './Firebase/withFirebaseContext';
 
 class GameOver extends Component {
   constructor(props) {
@@ -21,9 +21,9 @@ class GameOver extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { name } = this.state;
-    const { firebase, score } = this.props;
+    const { registerScore, score } = this.props;
     if (name.length >= 1) {
-      firebase.registerScore(name, score);
+      registerScore(name, score);
       this.setState({ name: "", done: true });
     }
   }
@@ -33,10 +33,7 @@ class GameOver extends Component {
     const { score } = this.props
     return (
       <div>
-        <FirebaseContext.Consumer>
-          {firebase => <Scores firebase={firebase} />}
-        </FirebaseContext.Consumer>
-
+        <Scores />
         <p className="GameOver">
           GAME OVER<br></br>
           Score: {score}
@@ -59,4 +56,4 @@ class GameOver extends Component {
   }
 }
 
-export default GameOver;
+export default withFirebaseContext(GameOver);
