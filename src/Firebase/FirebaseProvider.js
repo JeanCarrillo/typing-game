@@ -22,12 +22,21 @@ class FirebaseProvider extends Component {
     this.scoresRef = firebase.database().ref('scores');
     this.lobbiesRef = firebase.database().ref('lobbies');
     this.db = firebase.database().ref();
+    // const lobbies = this.db.child('lobbies');
+    // lobbies.push({
+    //   'name': `test`,
+    //   'players': {
+    //     '1': {
+    //     'name': `test`,
+    //     'playerNum' : 1,
+    //     },
+    //   },
+    // });
     // const lobbies = this.db.child("lobbies");           
     // lobbies.push({
-    //   'name': 'Room 5',
-    //   'players': '[]',
-    //   'messages': '{}',
-    //   'game':'{}',
+    //   'name': 'Room 1',
+    //   'players': ['', ''],
+    //   'messages': {},
     // });
     this.state = {
       scores: [],
@@ -36,6 +45,7 @@ class FirebaseProvider extends Component {
       registerScore: this.registerScore,
       removeLobby: this.removeLobby,
       createLobby: this.createLobby,
+      joinLobby: this.joinLobby,
     }
   }
 
@@ -44,17 +54,44 @@ class FirebaseProvider extends Component {
       this.setState({ scores: Object.values(snapshot.val()) });
     });
     this.lobbiesRef.on('value', (snapshot => {
-      this.setState({ lobbies: snapshot.val() })
+      this.setState({ lobbies: snapshot.val() });
     }));
   }
 
+  joinLobby = (key, name) => {
+    firebase.database().ref('lobbies/' + key).once('value', (snapshot) => {
+      const players = snapshot.val().players
+      console.log(players)
+      // players[0]="gregory";
+      firebase.database().ref('lobbies/' + key).update({
+        players,
+      }, function(error) {
+        if (error) {
+          console.log('fail')
+        } else {
+          console.log('success')
+        }
+      });
+    });
+  }
+
   createLobby = (name) => {
+        // const lobbies = this.db.child("lobbies");           
+    // lobbies.push({
+    //   'name': 'Room 1',
+    //   'players': ['', ''],
+    //   'messages': {},
+    // });
     if (name.length > 0) {
       const lobbies = this.db.child('lobbies');
       lobbies.push({
         'name': `${name}`,
-        'players': [`${name}`],
-        'messages': {},
+        'players': {
+          '1': {
+          'name': `${name}`,
+          'playerNum' : 1,
+          },
+        },
       });
     }
   }

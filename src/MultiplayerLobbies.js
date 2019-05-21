@@ -10,10 +10,6 @@ class MultiplayerLobbies extends Component {
     };
   }
 
-  joinLobby = (name) => {
-
-  }
-
   handleChange = (e) => {
     if (e.target.value.length <= 12) {
       this.setState({ name: e.target.value });
@@ -22,7 +18,7 @@ class MultiplayerLobbies extends Component {
 
   render() {
     const {
-      lobbies, removeLobby, // createLobby
+      lobbies, removeLobby, joinLobby, createLobby
     } = this.props;
     const { name } = this.state;
     const multiplayerLobbies = lobbies ?
@@ -32,7 +28,6 @@ class MultiplayerLobbies extends Component {
       Object.keys(lobbies)
       : [];
     console.log(multiplayerLobbies)
-    // const players = JSON.parse()
     return (
       <div className="MultiplayerLobbies">
         <h1>Multiplayer : </h1>
@@ -43,8 +38,8 @@ class MultiplayerLobbies extends Component {
             <input onChange={this.handleChange} type="text" value={name} />
           </label>
         </form>
-        {/* <h3>Host game</h3>
-        <button onClick={() => createLobby(name)}>Create</button> */}
+        <h3>Host game</h3>
+        <button onClick={() => createLobby(name)}>Create</button>
         <h3>Current games : </h3>
         {
           multiplayerLobbies.map((lobby, i) => (
@@ -52,10 +47,12 @@ class MultiplayerLobbies extends Component {
               <p>
                 <span className="lobbyName">{lobby.name}</span>
                 {' : '}
-              <span className="lobbyPlayers">{JSON.parse(lobby.players).length}/2</span>
+                <span className="lobbyPlayers">{Object.keys(lobby.players).length}/2</span>
                 <button onClick={() => removeLobby(`${multiplayerLobbiesKeys[i]}`)}>Remove</button>
                 <Link to={`/Multiplayer/${lobby.name.slice(-1)}`} >
+                  <button onClick={() => joinLobby(multiplayerLobbiesKeys[i], name)}>
                     Join
+                  </button>
                 </Link>
               </p>
             </div>
