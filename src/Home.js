@@ -10,7 +10,7 @@ class Home extends Component {
             Solo
           </button>
         </Link>
-        <Link to="/Multiplayer">
+        <Link to="/Coop">
           <button>
             Multiplayer
           </button>

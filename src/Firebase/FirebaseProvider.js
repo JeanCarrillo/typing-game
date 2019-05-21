@@ -41,11 +41,13 @@ class FirebaseProvider extends Component {
     this.state = {
       scores: [],
       lobbies: [],
-      currentGame: {},
+      games: [],
+      currentGame :{},
       registerScore: this.registerScore,
       removeLobby: this.removeLobby,
       createLobby: this.createLobby,
       joinLobby: this.joinLobby,
+      createGame: this.createGame,
     }
   }
 
@@ -61,22 +63,18 @@ class FirebaseProvider extends Component {
   joinLobby = (key, name) => {
     firebase.database().ref('lobbies/' + key).once('value', (snapshot) => {
       const players = snapshot.val().players
-      console.log(players)
-      // players[0]="gregory";
+      players.push({
+        'name': name,
+        'playerNum': 2,
+      })
       firebase.database().ref('lobbies/' + key).update({
         players,
-      }, function(error) {
-        if (error) {
-          console.log('fail')
-        } else {
-          console.log('success')
-        }
       });
     });
   }
 
   createLobby = (name) => {
-        // const lobbies = this.db.child("lobbies");           
+    // const lobbies = this.db.child("lobbies");           
     // lobbies.push({
     //   'name': 'Room 1',
     //   'players': ['', ''],
@@ -86,18 +84,47 @@ class FirebaseProvider extends Component {
       const lobbies = this.db.child('lobbies');
       lobbies.push({
         'name': `${name}`,
+        'launched': false,
         'players': {
-          '1': {
-          'name': `${name}`,
-          'playerNum' : 1,
+          '0': {
+            'name': `${name}`,
+            'playerNum': 1,
           },
         },
       });
     }
   }
 
+  createGame = (host, client, lobbyKey) => {
+    const games = this.db.child('games');
+    const gameRef = games.push({
+      'name': `${host}`,
+      'players': {
+        '0': {
+          'name': `${host}`,
+          'playerNum': 1,
+        },
+        '1': {
+          'name': `${client}`,
+          'playerNum': 2,
+        },
+      },
+    });
+    const gameKey = gameRef.getKey();
+    firebase.database().ref('lobbies/' + lobbyKey).update({
+      'launched': true,
+      'gameKey': `${gameKey}`
+    }, (err) => {
+      if (err) {
+        console.log('fail')
+      } else {
+        // console.log('success')
+      }
+    });
+    return gameKey;
+  }
+
   removeLobby = (key) => {
-    // const lobbies = this.db.child('lobbies');
     this.lobbiesRef.child(`${key}`).remove();
   }
 

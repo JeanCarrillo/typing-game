@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import withFirebaseContext from './Firebase/withFirebaseContext';
 import { Link } from 'react-router-dom';
 
-class MultiplayerLobbies extends Component {
+class CoopLobbies extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,10 +27,9 @@ class MultiplayerLobbies extends Component {
     const multiplayerLobbiesKeys = lobbies ?
       Object.keys(lobbies)
       : [];
-    console.log(multiplayerLobbies)
     return (
-      <div className="MultiplayerLobbies">
-        <h1>Multiplayer : </h1>
+      <div className="CoopLobbies">
+        <h1>Coop : </h1>
         <form >
           <label>
             Enter your name :
@@ -39,7 +38,15 @@ class MultiplayerLobbies extends Component {
           </label>
         </form>
         <h3>Host game</h3>
-        <button onClick={() => createLobby(name)}>Create</button>
+        <Link to={{
+          pathname: `/Coop/${name}`,
+          state: {
+            name,
+            host: true,
+          }
+        }}>
+          <button onClick={() => createLobby(name)}>Create game</button>
+        </Link>
         <h3>Current games : </h3>
         {
           multiplayerLobbies.map((lobby, i) => (
@@ -49,7 +56,14 @@ class MultiplayerLobbies extends Component {
                 {' : '}
                 <span className="lobbyPlayers">{Object.keys(lobby.players).length}/2</span>
                 <button onClick={() => removeLobby(`${multiplayerLobbiesKeys[i]}`)}>Remove</button>
-                <Link to={`/Multiplayer/${lobby.name.slice(-1)}`} >
+                <Link to={{
+                  pathname: `/Coop/${lobby.name}`,
+                  state: {
+                    name,
+                    host: false,
+                    key: `${multiplayerLobbiesKeys[i]}`,
+                  }
+                }}>
                   <button onClick={() => joinLobby(multiplayerLobbiesKeys[i], name)}>
                     Join
                   </button>
@@ -63,4 +77,4 @@ class MultiplayerLobbies extends Component {
   }
 }
 
-export default withFirebaseContext(MultiplayerLobbies);
+export default withFirebaseContext(CoopLobbies);
