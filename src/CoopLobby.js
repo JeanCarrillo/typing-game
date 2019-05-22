@@ -30,6 +30,7 @@ class CoopLobby extends Component {
     if (launched === false) {
       if (lobbies) {
         if (host === true) {
+          this.playerNum = 0;
           this.multiplayerLobbies = Object.values(lobbies);
           this.multiplayerLobbiesKeys = Object.keys(lobbies);
           for (let i = 0; i < this.multiplayerLobbies.length; i += 1) {
@@ -42,6 +43,7 @@ class CoopLobby extends Component {
             this.canLaunch = true;
           }
         } else {
+          this.playerNum = 1;
           this.players = Object.values(lobbies[this.key].players);
         }
       }
@@ -73,6 +75,7 @@ class CoopLobby extends Component {
           gameKey={this.gameKey}
           host={host}
           name={name}
+          playerNum={this.playerNum}
         />
     );
   }

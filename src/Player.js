@@ -1,31 +1,44 @@
+const types = {
+  archer: {
+    standing: {
+      spriteMin: 0,
+      spriteMax: 9,
+    },
+    shooting: {
+      spriteMin: 0,
+      spriteMax: 9,
+    }
+  }
+};
 
 class Player {
-  constructor(type){
-    this.types = {
-      archer: {
-        standing: {
-          spriteMin: 0,
-          spriteMax: 9,
-        },
-        shooting: {
-          spriteMin: 0,
-          spriteMax: 9,
-        }
-      }
+  constructor(type, num, name) {
+    // if (num && name) {
+    //   this.num = num;
+    //   this.name = name;
+    //   if (this.num === 1) {
+    //     this.posX = 48;
+    //     this.posY = 37;
+    //   }
+    // }
+    this.posX = 50;
+    this.posY = 39;
+    if (num) {
+      this.posX = 48;
+      this.posY = 36;
     }
+    this.num = num;
     this.alive = true;
     this.type = type;
     this.status = "standing";
-    this.posX = 50;
-    this.posY = 39;
-    this.animation = this.types[this.type][this.status].spriteMin;
+    this.animation = types[this.type][this.status].spriteMin;
     this.animationDelay = 50;
     this.animationTime = Date.now();
     this.direction = 1;
   }
 
   action() {
-    this.animate(this.types[this.type][this.status].spriteMin, this.types[this.type][this.status].spriteMax);
+    this.animate(types[this.type][this.status].spriteMin, types[this.type][this.status].spriteMax);
   }
 
   animate(spriteMin, spriteMax) {
@@ -50,7 +63,7 @@ class Player {
 
   updateStatus(status, direction) {
     this.status = status;
-    this.animation = this.types[this.type][this.status].spriteMin;
+    this.animation = types[this.type][this.status].spriteMin;
     if (direction) {
       this.direction = direction;
     }

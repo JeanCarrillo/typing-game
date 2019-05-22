@@ -21,6 +21,7 @@ const troll3 = importAll(require.context('./assets/Troll3/animation/', false, /\
 class CoopGameLoop extends Component {
   constructor(props) {
     super(props);
+    this.playerNum = props.playerNum;
     this.host = props.host;
     this.gameKey = props.gameKey;
     if (this.host === true) {
@@ -30,7 +31,7 @@ class CoopGameLoop extends Component {
       this.monstersGenerationSpeed = 3000;
     }
     this.players = [];
-    const player = new Player('archer');
+    const player = new Player('archer', this.playerNum);
     this.players.push(player);
     this.monsters = [];
     this.projectiles = [];

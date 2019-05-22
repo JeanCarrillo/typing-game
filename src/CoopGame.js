@@ -9,6 +9,7 @@ import withFirebaseContext from './Firebase/withFirebaseContext';
 class CoopGame extends Component {
   constructor(props) {
     super(props);
+    this.playerNum = props.playerNum;
     this.gameKey = props.gameKey;
     const listenGameData = props.listenGameData;
     listenGameData(this.gameKey);
@@ -56,7 +57,7 @@ class CoopGame extends Component {
                 <p className="Score">Score : {monstersKilled}</p>
               </div>
           }
-          <CoopGameLoop host={this.host} gameKey={this.gameKey} updateScore={this.updateScore} handleGameOver={this.handleGameOver} words={this.words} />
+          <CoopGameLoop playerNum={this.playerNum} host={this.host} gameKey={this.gameKey} updateScore={this.updateScore} handleGameOver={this.handleGameOver} words={this.words} />
         </div>
       </div>
     );

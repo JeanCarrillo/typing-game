@@ -1,50 +1,51 @@
+const types = {
+  zombie: {
+    sizeX: 5,
+    sizeY: 5,
+    animationDelay: 200,
+    walking: {
+      speed: 0.1,
+      spriteMin: 40,
+      spriteMax: 45,
+    },
+    running: {
+      speed: 0.2,
+      spriteMin: 34,
+      spriteMax: 39,
+    },
+    dying: {
+      spriteMin: 7,
+      spriteMax: 13,
+    }
+  },
+  troll: {
+    sizeX: 15,
+    sizeY: 15,
+    animationDelay: 200,
+    walking: {
+      speed: 0.05,
+      spriteMin: 42,
+      spriteMax: 48,
+    },
+    // running: {
+    //   speed: 0.1,
+    //   spriteMin: 34,
+    //   spriteMax: 39,
+    // },
+    hurt: {
+      speed: 0,
+      spriteMin: 14,
+      spriteMax: 20,
+    },
+    dying: {
+      spriteMin: 7,
+      spriteMax: 13,
+    }
+  }
+}
+
 class Monster {
   constructor(text, type) {
-    this.types = {
-      zombie: {
-        sizeX: 5,
-        sizeY: 5,
-        animationDelay: 200,
-        walking: {
-          speed: 0.1,
-          spriteMin: 40,
-          spriteMax: 45,
-        },
-        running: {
-          speed: 0.2,
-          spriteMin: 34,
-          spriteMax: 39,
-        },
-        dying: {
-          spriteMin: 7,
-          spriteMax: 13,
-        }
-      },
-      troll: {
-        sizeX: 15,
-        sizeY: 15,
-        animationDelay: 200,
-        walking: {
-          speed: 0.05,
-          spriteMin: 42,
-          spriteMax: 48,
-        },
-        // running: {
-        //   speed: 0.1,
-        //   spriteMin: 34,
-        //   spriteMax: 39,
-        // },
-        hurt: {
-          speed: 0,
-          spriteMin: 14,
-          spriteMax: 20,
-        },
-        dying: {
-          spriteMin: 7,
-          spriteMax: 13,
-        }
-      }
-    }
     this.text = text;
     this.alive = true;
     // Monster is coming from :
@@ -85,7 +86,7 @@ class Monster {
     this.type = type;
     // Determine movingStatus
     // 1: walking     2: running
-    if (this.types[this.type].hasOwnProperty('running')) {
+    if (types[this.type].hasOwnProperty('running')) {
       this.status = Math.ceil(Math.random() * 3);
       if (this.status === 3) {
         this.status = 'running';
@@ -95,15 +96,15 @@ class Monster {
     } else {
       this.status = 'walking'
     }
-    this.speedX = directionX * this.types[this.type][this.status].speed;
-    this.speedY = directionY * this.types[this.type][this.status].speed;
-    this.animation = this.types[this.type][this.status].spriteMin;
+    this.speedX = directionX * types[this.type][this.status].speed;
+    this.speedY = directionY * types[this.type][this.status].speed;
+    this.animation = types[this.type][this.status].spriteMin;
     // Get image
-    this.sizeX = this.types[this.type].sizeX;
-    this.sizeY = this.types[this.type].sizeY;
+    this.sizeX = types[this.type].sizeX;
+    this.sizeY = types[this.type].sizeY;
     const randomImg = Math.ceil(Math.random() * 3);
     this.img = this.type + randomImg;
-    this.animationDelay = this.types[this.type].animationDelay;
+    this.animationDelay = types[this.type].animationDelay;
     this.animationTime = Date.now();
     this.left > 50 ? this.direction = -1 : this.direction = 1;
   }
@@ -118,7 +119,7 @@ class Monster {
         this.left += this.speedX;
       }
     }
-    this.animate(this.types[this.type][this.status].spriteMin, this.types[this.type][this.status].spriteMax);
+    this.animate(types[this.type][this.status].spriteMin, types[this.type][this.status].spriteMax);
   }
 
   animate(spriteMin, spriteMax) {
@@ -144,7 +145,7 @@ class Monster {
 
   updateStatus(status) {
     this.status = status;
-    this.animation = this.types[this.type][this.status].spriteMin;
+    this.animation = types[this.type][this.status].spriteMin;
   }
 }
 
