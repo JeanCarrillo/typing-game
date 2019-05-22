@@ -23,15 +23,15 @@ class CoopGameLoop extends Component {
     super(props);
     this.host = props.host;
     this.gameKey = props.gameKey;
-    if (this.host) {
+    if (this.host === true) {
       this.minWordLength = 3;
       this.maxWordLength = this.minWordLength + 4;
-      this.players = [];
-      const player = new Player('archer');
-      this.players.push(player);
       this.monstersGenerationTime = Date.now();
       this.monstersGenerationSpeed = 3000;
     }
+    this.players = [];
+    const player = new Player('archer');
+    this.players.push(player);
     this.monsters = [];
     this.projectiles = [];
     this.word = '';
@@ -60,12 +60,16 @@ class CoopGameLoop extends Component {
       this.gameLoop(), 40);
   }
 
+  componentWillUnmount() {
+    clearInterval(this.gameRunning);
+  }
+
   gameLoop() {
-    const now = Date.now();
     this.shoot();
-    if (this.host) {
+    if (this.host === true) {
       this.checkCollisions();
       // Monster generation call
+      const now = Date.now();
       if (now - this.monstersGenerationTime > this.monstersGenerationSpeed) {
         this.monstersGenerationTime = Date.now();
         this.generateMonster();
@@ -93,11 +97,18 @@ class CoopGameLoop extends Component {
     for (let i = 0; i < this.players.length; i += 1) {
       this.players[i].action();
     }
+    if (this.host === true) {
+      const { updateGame } = this.props;
+      updateGame(this.gameKey, this.monsters, this.projectiles, this.players);
+    }
+    if (this.host === false) {
+      const { currentGame } = this.props;
+      // this.players = currentGame.players ? currentGame.players : [];
+      this.monsters = currentGame.monsters ? currentGame.monsters : [];
+      this.projectiles = currentGame.projectiles ? currentGame.projectiles : [];
+    }
     this.setState({
-      refresh: true
-      // monsters: this.monsters,
-      // players: this.players,
-      // projectiles: this.projectiles,
+      refresh: true,
     });
   }
 
@@ -137,13 +148,21 @@ class CoopGameLoop extends Component {
     if (word !== '') {
       this.monsters.find((monster, i) => {
         for (let j = 0; j < monster.text.length; j += 1) {
-          if (monster.text[j].toLowerCase() === word.toLowerCase()) {
-            this.setState({ word: "" });
-            let direction;
-            monster.left > 50 ? direction = 1 : direction = -1;
-            this.players[0].updateStatus("shooting", direction);
-            let projectile = new Projectile('arrow', monster.left, monster.top);
-            this.projectiles.push(projectile);
+          if (monster.alive === true) {
+            if (monster.text[j].toLowerCase() === word.toLowerCase()) {
+              this.setState({ word: "" });
+              let direction;
+              monster.left > 50 ? direction = 1 : direction = -1;
+              this.players[0].updateStatus("shooting", direction);
+              if (this.host === true) {
+              let projectile = new Projectile('arrow', monster.left, monster.top);
+              this.projectiles.push(projectile);
+              } 
+              // else {
+              //   const { updateGame } = this.props;
+              //   updateGame(this.gameKey, this.monsters, this.projectiles, this.players, this.host);
+              // }
+            }
           }
         }
         return false;
@@ -192,7 +211,6 @@ class CoopGameLoop extends Component {
 
   render() {
     const { word } = this.state;
-    // const { games } = this.props;
     return (
       <div>
         {

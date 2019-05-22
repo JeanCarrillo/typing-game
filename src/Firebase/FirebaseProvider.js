@@ -21,6 +21,7 @@ class FirebaseProvider extends Component {
     firebase.initializeApp(config);
     this.scoresRef = firebase.database().ref('scores');
     this.lobbiesRef = firebase.database().ref('lobbies');
+    this.gamesRef = firebase.database().ref('games');
     this.db = firebase.database().ref();
     // const lobbies = this.db.child('lobbies');
     // lobbies.push({
@@ -42,12 +43,18 @@ class FirebaseProvider extends Component {
       scores: [],
       lobbies: [],
       games: [],
-      currentGame :{},
+      currentGame: {
+        'players': [],
+        'monsters': [],
+        'projectiles': [],
+      },
       registerScore: this.registerScore,
       removeLobby: this.removeLobby,
       createLobby: this.createLobby,
       joinLobby: this.joinLobby,
       createGame: this.createGame,
+      updateGame: this.updateGame,
+      listenGameData: this.listenGameData,
     }
   }
 
@@ -95,20 +102,18 @@ class FirebaseProvider extends Component {
     }
   }
 
+  removeLobby = (key) => {
+    this.lobbiesRef.child(`${key}`).remove();
+  }
+
   createGame = (host, client, lobbyKey) => {
     const games = this.db.child('games');
     const gameRef = games.push({
-      'name': `${host}`,
-      'players': {
-        '0': {
-          'name': `${host}`,
-          'playerNum': 1,
-        },
-        '1': {
-          'name': `${client}`,
-          'playerNum': 2,
-        },
-      },
+      'host': `${host}`,
+      'client': `${client}`,
+      'players': [],
+      'monsters': [],
+      'projectiles': [],
     });
     const gameKey = gameRef.getKey();
     firebase.database().ref('lobbies/' + lobbyKey).update({
@@ -124,8 +129,26 @@ class FirebaseProvider extends Component {
     return gameKey;
   }
 
-  removeLobby = (key) => {
-    this.lobbiesRef.child(`${key}`).remove();
+  updateGame = (key, monsters, projectiles, players) => {
+    firebase.database().ref('games/' + key).update({
+      'players': players,
+      'monsters': monsters,
+      'projectiles': projectiles,
+      // score,
+    }, (err) => {
+      if (err) {
+        console.log('fail')
+      } else {
+        // console.log('success')
+      }
+    });
+  }
+
+
+  listenGameData = (key) => {
+    firebase.database().ref('games/' + key).on('value', (snapshot) => {
+      this.setState({ currentGame: snapshot.val() });
+    });
   }
 
   registerScore = (name, score) => {

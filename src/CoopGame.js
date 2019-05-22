@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
-import CoopGameLoop from './GameLoop';
+import CoopGameLoop from './CoopGameLoop';
 import GameOver from './GameOver';
 // import Type from './Type';
 import wordsfr from './wordsfr.js';
@@ -10,8 +10,10 @@ class CoopGame extends Component {
   constructor(props) {
     super(props);
     this.gameKey = props.gameKey;
+    const listenGameData = props.listenGameData;
+    listenGameData(this.gameKey);
     this.host = props.host;
-    if (this.host) {
+    if (this.host === true) {
       this.vocabulary = wordsfr;
       this.words = {};
       for (let i = 0; i < this.vocabulary.length; i += 1) {
@@ -54,7 +56,7 @@ class CoopGame extends Component {
                 <p className="Score">Score : {monstersKilled}</p>
               </div>
           }
-          <CoopGameLoop gameKey={this.gameKey} updateScore={this.updateScore} handleGameOver={this.handleGameOver} words={this.words} />
+          <CoopGameLoop host={this.host} gameKey={this.gameKey} updateScore={this.updateScore} handleGameOver={this.handleGameOver} words={this.words} />
         </div>
       </div>
     );

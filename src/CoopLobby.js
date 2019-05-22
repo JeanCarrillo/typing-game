@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import withFirebaseContext from './Firebase/withFirebaseContext';
 import CoopGame from './CoopGame';
 
-class MultiplayerLobby extends Component {
+class CoopLobby extends Component {
   constructor(props) {
     super(props);
     this.key = null;
@@ -21,7 +21,6 @@ class MultiplayerLobby extends Component {
   launchGame = (host, client, key) => {
     const { createGame } = this.props;
     this.gameKey = createGame(host, client, key);
-    console.log(this.gameKey)
   }
 
   render() {
@@ -53,7 +52,7 @@ class MultiplayerLobby extends Component {
     }
     return (
       !launched ?
-        <div className="MultiplayerLobby">
+        <div className="CoopLobby">
           <h1>Players :</h1>
           {
             this.players.map((player, i) => (
@@ -79,4 +78,4 @@ class MultiplayerLobby extends Component {
   }
 }
 
-export default withFirebaseContext(MultiplayerLobby);
+export default withFirebaseContext(CoopLobby);
