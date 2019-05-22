@@ -90,20 +90,29 @@ class CoopGameLoop extends Component {
         }
       }
       // Projectiles move
-      for (let i = 0; i < this.projectiles.length; i += 1) {
-        this.projectiles[i].move();
+      if (this.projectiles) {
+        for (let i = 0; i < this.projectiles.length; i += 1) {
+          this.projectiles[i].move();
+        }
       }
     }
     // Players actions
     for (let i = 0; i < this.players.length; i += 1) {
       this.players[i].action();
     }
+    const { currentGame } = this.props;
     if (this.host === true) {
-      const { updateGame } = this.props;
+      const { updateGame, clearTempProjectiles } = this.props;
+      if (currentGame.tempProjectiles) {
+        for (let i = 0; i < currentGame.tempProjectiles.length; i += 1) {
+          const projectile = new Projectile('arrow',null,null,currentGame.tempProjectiles[i]);
+          this.projectiles.push(projectile);
+        }
+        clearTempProjectiles(this.gameKey);
+      }
       updateGame(this.gameKey, this.monsters, this.projectiles, this.players);
     }
     if (this.host === false) {
-      const { currentGame } = this.props;
       // this.players = currentGame.players ? currentGame.players : [];
       this.monsters = currentGame.monsters ? currentGame.monsters : [];
       this.projectiles = currentGame.projectiles ? currentGame.projectiles : [];
@@ -148,21 +157,20 @@ class CoopGameLoop extends Component {
     const { word } = this.state;
     if (word !== '') {
       this.monsters.find((monster, i) => {
-        for (let j = 0; j < monster.text.length; j += 1) {
-          if (monster.alive === true) {
+        if (monster.text && monster.alive) {
+          for (let j = 0; j < monster.text.length; j += 1) {
             if (monster.text[j].toLowerCase() === word.toLowerCase()) {
               this.setState({ word: "" });
               let direction;
               monster.left > 50 ? direction = 1 : direction = -1;
               this.players[0].updateStatus("shooting", direction);
-              if (this.host === true) {
               let projectile = new Projectile('arrow', monster.left, monster.top);
-              this.projectiles.push(projectile);
-              } 
-              // else {
-              //   const { updateGame } = this.props;
-              //   updateGame(this.gameKey, this.monsters, this.projectiles, this.players, this.host);
-              // }
+              if (this.host === true) {
+                this.projectiles.push(projectile);
+              } else {
+                const { clientAction } = this.props;
+                clientAction(this.gameKey, projectile);
+              }
             }
           }
         }

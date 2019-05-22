@@ -55,6 +55,8 @@ class FirebaseProvider extends Component {
       createGame: this.createGame,
       updateGame: this.updateGame,
       listenGameData: this.listenGameData,
+      clientAction: this.clientAction,
+      clearTempProjectiles: this.clearTempProjectiles,
     }
   }
 
@@ -142,6 +144,27 @@ class FirebaseProvider extends Component {
         // console.log('success')
       }
     });
+  }
+
+  clientAction = (key, projectile) => {
+    firebase.database().ref('games/' + key).once('value', (snapshot) => {
+        firebase.database().ref('games/' + key).update({
+          'tempProjectiles': [projectile],
+        });
+    });
+    // firebase.database().ref('games/' + key).update({
+    //   'tempProjectiles': projectiles,
+    // }, (err) => {
+    //   if (err) {
+    //     console.log('fail')
+    //   } else {
+    //     // console.log('success')
+    //   }
+    // });
+  }
+
+  clearTempProjectiles = (key) => {
+      firebase.database().ref('games/' + key).update({'tempProjectiles':[]});
   }
 
 
