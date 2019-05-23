@@ -7,7 +7,7 @@ const types = {
 class Projectile {
   constructor(type, dirX, dirY, copy) {
     // Copy
-    if (dirX === null && dirY === null) {
+    if (copy) {
       this.angle = copy.angle;
       this.left = copy.left;
       this.top = copy.top;

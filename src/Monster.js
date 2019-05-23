@@ -45,65 +45,78 @@ const types = {
 }
 
 class Monster {
-  constructor(text, type) {
-    this.text = text;
-    this.alive = true;
-    // Monster is coming from :
-    const pos = Math.floor(Math.random() * 100);
-    const comingFromSide = Math.floor(Math.random() * 4);
-    switch (comingFromSide) {
-      // left
-      case 1:
-        this.left = -10;
-        this.top = pos;
-        break;
-      // right
-      case 2:
-        this.left = 110;
-        this.top = pos;
-        break;
-      // top
-      case 3:
-        this.top = -10;
-        this.left = pos;
-        break;
-      // bottom
-      default:
-        this.top = 110;
-        this.left = pos;
-        break;
-    }
-    // Temp values for player, will be variables if player moves someday
-    this.playerPosX = 50;
-    this.playerPosY = 39;
-    // Calculate speedX and speedY (distance per step)
-    let directionX = this.playerPosX - this.left;
-    let directionY = this.playerPosY - this.top;
-    let len = Math.sqrt(directionX * directionX + directionY * directionY);
-    directionX /= len;
-    directionY /= len;
-    // Determine race of monster
-    this.type = type;
-    // Determine movingStatus
-    // 1: walking     2: running
-    if (types[this.type].hasOwnProperty('running')) {
-      this.status = Math.ceil(Math.random() * 3);
-      if (this.status === 3) {
-        this.status = 'running';
-      } else {
-        this.status = 'walking';
-      }
+  constructor(text, type, copy) {
+    if (copy) {
+      this.direction = copy.direction;
+      this.alive = copy.alive;
+      this.status = copy.status;
+      this.angle = copy.angle;
+      this.left = copy.left;
+      this.top = copy.top;
+      this.speedX = copy.speedX;
+      this.speedY = copy.speedY;
+      this.type = copy.type;
+      this.img = copy.img;
     } else {
-      this.status = 'walking'
+      this.text = text;
+      this.alive = true;
+      // Monster is coming from :
+      const pos = Math.floor(Math.random() * 100);
+      const comingFromSide = Math.floor(Math.random() * 4);
+      switch (comingFromSide) {
+        // left
+        case 1:
+          this.left = -10;
+          this.top = pos;
+          break;
+        // right
+        case 2:
+          this.left = 110;
+          this.top = pos;
+          break;
+        // top
+        case 3:
+          this.top = -10;
+          this.left = pos;
+          break;
+        // bottom
+        default:
+          this.top = 110;
+          this.left = pos;
+          break;
+      }
+      // Temp values for player, will be variables if player moves someday
+      this.playerPosX = 50;
+      this.playerPosY = 39;
+      // Calculate speedX and speedY (distance per step)
+      let directionX = this.playerPosX - this.left;
+      let directionY = this.playerPosY - this.top;
+      let len = Math.sqrt(directionX * directionX + directionY * directionY);
+      directionX /= len;
+      directionY /= len;
+      // Determine race of monster
+      this.type = type;
+      // Determine movingStatus
+      // 1: walking     2: running
+      if (types[this.type].hasOwnProperty('running')) {
+        this.status = Math.ceil(Math.random() * 3);
+        if (this.status === 3) {
+          this.status = 'running';
+        } else {
+          this.status = 'walking';
+        }
+      } else {
+        this.status = 'walking'
+      }
+      this.speedX = directionX * types[this.type][this.status].speed;
+      this.speedY = directionY * types[this.type][this.status].speed;
+      this.animation = types[this.type][this.status].spriteMin;
+      // Get image
+      this.sizeX = types[this.type].sizeX;
+      this.sizeY = types[this.type].sizeY;
+      const randomImg = Math.ceil(Math.random() * 3);
+      this.img = this.type + randomImg;
     }
-    this.speedX = directionX * types[this.type][this.status].speed;
-    this.speedY = directionY * types[this.type][this.status].speed;
-    this.animation = types[this.type][this.status].spriteMin;
-    // Get image
-    this.sizeX = types[this.type].sizeX;
-    this.sizeY = types[this.type].sizeY;
-    const randomImg = Math.ceil(Math.random() * 3);
-    this.img = this.type + randomImg;
     this.animationDelay = types[this.type].animationDelay;
     this.animationTime = Date.now();
     this.left > 50 ? this.direction = -1 : this.direction = 1;
