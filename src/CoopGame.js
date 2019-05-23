@@ -40,9 +40,11 @@ class CoopGame extends Component {
     super(props);
     this.playerNum = props.playerNum;
     this.host = props.host;
+    this.name = props.name;
     this.gameKey = props.gameKey;
     const listenGameData = props.listenGameData;
     listenGameData(this.gameKey);
+    this.players = [];
     if (this.host) {
       this.vocabulary = wordsfr;
       this.words = {};
@@ -59,11 +61,17 @@ class CoopGame extends Component {
       this.monstersGenerationTime = Date.now();
       this.monstersGenerationSpeed = 3000;
       this.networkRefreshTime = Date.now();
-      this.networkRefreshSpeed = 1000;
+      this.networkRefreshSpeed = 0;
+      const player1 = new Player('archer', 0, this.name, 48, 39);
+      const player2 = new Player('archer', 1, 'test', 52, 39);
+      this.players.push(player1);
+      this.players.push(player2);
+    } else {
+      const player1 = new Player('archer', 0, 'test', 48, 39);
+      const player2 = new Player('archer', 1, this.name, 52, 39);
+      this.players.push(player1);
+      this.players.push(player2);
     }
-    this.players = [];
-    const player = new Player('archer', this.playerNum);
-    this.players.push(player);
     this.monsters = [];
     this.projectiles = [];
     this.word = '';
@@ -133,7 +141,6 @@ class CoopGame extends Component {
     }
     if (this.host
       && (now - this.networkRefreshTime > this.networkRefreshSpeed)) {
-      console.log('coucou')
       this.networkRefreshTime = Date.now();
       const { updateGame, clearTempProjectiles } = this.props;
       if (currentGame.tempProjectiles) {
@@ -195,7 +202,7 @@ class CoopGame extends Component {
               this.setState({ word: "" });
               let direction;
               monster.left > 50 ? direction = 1 : direction = -1;
-              this.players[0].updateStatus("shooting", direction);
+              this.players[this.playerNum].updateStatus("shooting", direction);
               let projectile = new Projectile('arrow', monster.left, monster.top);
               if (this.host === true) {
                 this.projectiles.push(projectile);
@@ -279,7 +286,7 @@ class CoopGame extends Component {
                   }}
                 />
                 {
-                  player.alive
+                  i === this.playerNum && player.alive
                     ? <div className="Type">
                       <form onSubmit={this.handleSubmit}>
                         <input className="TypeTextBox" type="text" autoFocus={true} value={word} onChange={this.handleChange} />

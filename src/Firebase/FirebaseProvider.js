@@ -133,7 +133,7 @@ class FirebaseProvider extends Component {
 
   updateGame = (key, monsters, projectiles, players) => {
     firebase.database().ref('games/' + key).update({
-      'players': players,
+      // 'players': players,
       'monsters': monsters,
       'projectiles': projectiles,
       // score,

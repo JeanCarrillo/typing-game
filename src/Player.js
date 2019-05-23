@@ -11,28 +11,23 @@ const types = {
   }
 };
 
+const animationDelay = 50;
+
 class Player {
-  constructor(type, num, name) {
-    // if (num && name) {
-    //   this.num = num;
-    //   this.name = name;
-    //   if (this.num === 1) {
-    //     this.posX = 48;
-    //     this.posY = 37;
-    //   }
-    // }
-    this.posX = 50;
-    this.posY = 39;
-    if (num) {
-      this.posX = 48;
-      this.posY = 36;
+  constructor(type, num, name, posX, posY) {
+    if (num && name && posX && posY) {
+      this.name = name;
+      this.posX = posX;
+      this.posY = posY;
+      this.num = num;
+    } else {
+      this.posX = 50;
+      this.posY = 39;
     }
-    this.num = num;
     this.alive = true;
     this.type = type;
     this.status = "standing";
     this.animation = types[this.type][this.status].spriteMin;
-    this.animationDelay = 50;
     this.animationTime = Date.now();
     this.direction = 1;
   }
@@ -43,7 +38,7 @@ class Player {
 
   animate(spriteMin, spriteMax) {
     const now = Date.now();
-    if (now - this.animationTime > this.animationDelay) {
+    if (now - this.animationTime > animationDelay) {
       this.animationTime = Date.now();
       if (this.animation >= spriteMin && this.animation < spriteMax) {
         this.animation += 1;
