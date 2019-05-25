@@ -23,6 +23,10 @@ class CoopLobby extends Component {
     this.gameKey = createGame(host, client, key);
   }
 
+  display() {
+
+  }
+
   render() {
     const { launched } = this.state;
     const { lobbies } = this.props;

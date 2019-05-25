@@ -13,7 +13,7 @@ const App = () => {
   return (
     <FirebaseProvider>
       <HashRouter>
-        <div>
+        <div className="App">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/Solo" component={Game} />

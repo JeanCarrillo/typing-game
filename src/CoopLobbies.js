@@ -16,9 +16,13 @@ class CoopLobbies extends Component {
     }
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
   render() {
     const {
-      lobbies, removeLobby, joinLobby, createLobby
+      lobbies, removeLobby, joinLobby, createLobby,
     } = this.props;
     const { name } = this.state;
     const multiplayerLobbies = lobbies ?
@@ -29,15 +33,14 @@ class CoopLobbies extends Component {
       : [];
     return (
       <div className="CoopLobbies">
-        <h1>Coop : </h1>
-        <form >
+        <h1>Coop</h1>
+        <form onSubmit={this.handleSubmit}>
           <label>
             Enter your name :
             {' '}
             <input onChange={this.handleChange} type="text" value={name} />
           </label>
         </form>
-        <h3>Host game</h3>
         <Link to={{
           pathname: `/Coop/${name}`,
           state: {
@@ -48,30 +51,32 @@ class CoopLobbies extends Component {
           <button onClick={() => createLobby(name)}>Create game</button>
         </Link>
         <h3>Current games : </h3>
-        {
-          multiplayerLobbies.map((lobby, i) => (
-            <div key={`lobbyId-${i + 1}`}>
-              <p>
-                <span className="lobbyName">{lobby.name}</span>
-                {' : '}
-                <span className="lobbyPlayers">{Object.keys(lobby.players).length}/2</span>
-                <button onClick={() => removeLobby(`${multiplayerLobbiesKeys[i]}`)}>Remove</button>
-                <Link to={{
-                  pathname: `/Coop/${lobby.name}`,
-                  state: {
-                    name,
-                    host: false,
-                    key: `${multiplayerLobbiesKeys[i]}`,
-                  }
-                }}>
-                  <button onClick={() => joinLobby(multiplayerLobbiesKeys[i], name)}>
-                    Join
+        <div className="coopGames">
+          {
+            multiplayerLobbies.map((lobby, i) => (
+              <div key={`lobbyId-${i + 1}`}>
+                <p>
+                  <span className="lobbyName">{lobby.name}</span>
+                  {' : '}
+                  <span className="lobbyPlayers">{Object.keys(lobby.players).length}/2</span>
+                  <button onClick={() => removeLobby(`${multiplayerLobbiesKeys[i]}`)}>Remove</button>
+                  <Link to={{
+                    pathname: `/Coop/${lobby.name}`,
+                    state: {
+                      name,
+                      host: false,
+                      key: `${multiplayerLobbiesKeys[i]}`,
+                    }
+                  }}>
+                    <button onClick={() => joinLobby(multiplayerLobbiesKeys[i], name)}>
+                      Join
                   </button>
-                </Link>
-              </p>
-            </div>
-          ))
-        }
+                  </Link>
+                </p>
+              </div>
+            ))
+          }
+        </div>
       </div>
     );
   }

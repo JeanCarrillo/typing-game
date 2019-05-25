@@ -55,6 +55,10 @@ class GameLoop extends Component {
       this.gameLoop(), 40);
   }
 
+  componentWillUnmount() {
+    clearInterval(this.gameRunning);
+  }
+
   gameLoop() {
     const now = Date.now();
     this.shoot();
@@ -135,7 +139,7 @@ class GameLoop extends Component {
             let direction;
             monster.left > 50 ? direction = 1 : direction = -1;
             this.players[0].updateStatus("shooting", direction);
-            let projectile = new Projectile('arrow', monster.left, monster.top);
+            let projectile = new Projectile('arrow', monster.left, monster.top, this.players[0].posX - 2, this.players[0].posY + 2);
             this.projectiles.push(projectile);
           }
         }
@@ -163,7 +167,7 @@ class GameLoop extends Component {
       text = [this.getWord(), this.getWord(), this.getWord()];
     }
     if (text) {
-      let monster = new Monster(text, rdmType);
+      let monster = new Monster(text, rdmType, this.players[0].posX, this.players[0].posY);
       this.monsters.push(monster);
     }
   }
@@ -229,7 +233,7 @@ class GameLoop extends Component {
               <img
                 alt="Monster"
                 key={`monsterImg-${i + 1}`}
-                className='Monster'
+                className={`${monster.type}`}
                 src={this.images[monster.img][monster.animation]}
                 style={{
                   maxWidth: `${monster.sizeX}vw`,

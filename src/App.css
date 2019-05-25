@@ -1,17 +1,143 @@
 @import url('https://fonts.googleapis.com/css?family=Creepster&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Volkhov&display=swap');
+
+*
+{
+  outline: 0;
+  -webkit-user-select: none; 
+  -khtml-user-select: none; 
+  -moz-user-select: none; 
+  -o-user-select: none; 
+  user-select: none;
+}
+
+html{
+  height: 100%;
+}
+
 body {
   overflow: hidden;
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
+.Home {
+  position: absolute;
+  background-image: url(assets/background.png);
+  background-size: cover;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+}
+
+.homeTitle {
+  font-family: 'Creepster', cursive;
+  position: absolute;
+  text-align: center;
+  left: 33%;
+  top: 0;
+  color: rgba(207, 27, 27, 0.952);
+  text-shadow: 0.5vw 0.5vw black;
+  font-size: 7vw;
+  z-index: 10;
+  margin-bottom: 0;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 35%;
+  left: 40%;
+  z-index: 10;
+}
+
+.Home button {
+  font-family: 'Creepster', cursive;
+  padding:1vw 3vw;
+  background-color:rgba(207, 27, 27, 0.952);
+  -moz-border-radius:0.5vw;
+  -webkit-border-radius:0.5vw;
+  border-radius:1.2vw;
+  border:0.1vw solid rgba(153, 12, 12, 0.952);
+  display:inline-block;
+  cursor:pointer;
+  font-size:2vw;
+  font-weight:bold;
+  text-decoration:none;
+  margin-bottom: 5%;
+  box-shadow: 0.3vw 0.3vw black;
+  color:black;
+  text-shadow: 0.1vw 0.1vw white;
+  letter-spacing: 0.4vw;
+}
+
+.Home button:hover {
+  border-color: black;
+}
+
+.BackButton {
+  position: absolute;
+  top: 10%;
+  left: 80%;
+  z-index: 10;
+}
+
+.CoopLobbies {
+  width: 25%;
+  padding: 1%;
+  margin: 0;
+  color: rgba(207, 27, 27, 0.952);
+  text-shadow: 0.2vw 0.2vw black;
+  font-size: 2vw;
+  font-family: 'Creepster', cursive;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20%;
+  left: 37%;
+  z-index: 10;
+}
+.CoopLobbies button {
+  letter-spacing: 0.4vw;
+}
+.CoopLobbies input {
+  width: 60%;
+  padding: 2%;
+  margin-bottom: 1%;
+  text-align: center;
+  font-size:2vw;
+}
+.CoopLobbies h1, h3 {
+  margin: 0;
+} 
+
+.coopGames button {
+  margin: 0;
+  padding:0.1vw 1vw;
+  background-color:rgba(207, 27, 27, 0.952);
+  font-size:1.5vw;
+  font-weight:bold;
+  text-decoration:none;
+  box-shadow: 0.2vw 0.2vw black;
+  letter-spacing: 0.2vw;
+} 
+
+.coopGames p {
+  margin: 0;
+} 
+
 .GameArea {
-  background-image: url(assets/background4.jpg);
-  background-repeat: repeat;
-  /* background-size: cover; */
+  /* border: 1px solid black; */
+  background-image: url(assets/background.png);
+  background-size: cover;
+  /* background-repeat: repeat; */
   position: absolute;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
+  padding-top: 56.25%;
+  overflow: hidden;
 }
 
 .Type {
@@ -87,6 +213,9 @@ body {
   z-index: 3;
   background-size: contain;
   background-repeat: no-repeat;
+  -webkit-filter: contrast(150%); 
+  filter: contrast(150%); 
+  /* -webkit-filter: brightness(100%);  */
 }
 
 .MonsterName {
@@ -107,11 +236,11 @@ body {
   font-size: 1em;
   color: black;
   position: absolute;
-  left: 75%;
-  top: 10%;
-  width: 20%;
+  left: 68%;
+  top: 5%;
+  width: 25%;
   margin: auto;
-  border-radius: 1vw;
+  border-radius: 10px;
   background-color: white;
   border: 0.01vw solid #d0cccc;
   box-shadow: 0.3vw 0.3vw black;
@@ -119,12 +248,12 @@ body {
 }
 
 .Scores p {
-  font-size: 2.5vh;
+  font-size: 1.5vw;
   margin: 0.2vw;
 }
 
 .Scores h1 {
-  font-size: 4vh;
+  font-size: 3vw;
   font-family: 'Volkhov', serif;
   margin: 1vw;
   text-decoration: underline;
@@ -139,7 +268,7 @@ body {
   top: 28vw;
   width: 20vw;
   margin: auto;
-  padding-top: 0.1vw;
+  padding-top: 0.5vw;
   padding-bottom: 1vw;
   border-radius: 1vw;
   background-color: white;

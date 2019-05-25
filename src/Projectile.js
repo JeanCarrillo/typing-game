@@ -5,7 +5,7 @@ const types = {
 }
 
 class Projectile {
-  constructor(type, dirX, dirY, copy) {
+  constructor(type, dirX, dirY, left, top, copy) {
     // Copy
     if (copy) {
       this.angle = copy.angle;
@@ -16,8 +16,8 @@ class Projectile {
       this.type = copy.type;
     } else {
       // Temp values
-      this.left = 50;
-      this.top = 42;
+      this.left = left;
+      this.top = top;
       this.type = type;
       this.img = this.type;
       let directionX = dirX - this.left;
@@ -27,17 +27,18 @@ class Projectile {
       directionY /= len;
       this.speedX = directionX * types[this.type].speed;
       this.speedY = directionY * types[this.type].speed;
+      // const screenH = window.innerHeight;
       const screenW = window.innerWidth;
-      const screenH = window.innerHeight;
+      const h = 9 * screenW / 16;
       const directionX2 = this.mmap(directionX, -1, 1, -screenW / 2, screenW / 2);
-      const directionY2 = this.mmap(directionY, -1, 1, screenH / 2, -screenH / 2);
+      const directionY2 = this.mmap(directionY, -1, 1, h/2, -h/2);
       this.angle = Math.atan2(directionY2, directionX2) * 180 / Math.PI;
     }
   }
 
   move() {
-    this.top += this.speedY;
     this.left += this.speedX;
+    this.top += this.speedY;
   }
 
   mmap(x, in_min, in_max, out_min, out_max) {

@@ -45,7 +45,7 @@ const types = {
 }
 
 class Monster {
-  constructor(text, type, copy) {
+  constructor(text, type, dirX, dirY, copy) {
     if (copy) {
       this.direction = copy.direction;
       this.alive = copy.alive;
@@ -86,11 +86,11 @@ class Monster {
           break;
       }
       // Temp values for player, will be variables if player moves someday
-      this.playerPosX = 50;
-      this.playerPosY = 39;
+      this.dirX = dirX;
+      this.dirY = dirY;
       // Calculate speedX and speedY (distance per step)
-      let directionX = this.playerPosX - this.left;
-      let directionY = this.playerPosY - this.top;
+      let directionX = this.dirX - this.left;
+      let directionY = this.dirY - this.top;
       let len = Math.sqrt(directionX * directionX + directionY * directionY);
       directionX /= len;
       directionY /= len;
@@ -119,18 +119,18 @@ class Monster {
     }
     this.animationDelay = types[this.type].animationDelay;
     this.animationTime = Date.now();
-    this.left > 50 ? this.direction = -1 : this.direction = 1;
+    this.left > dirX ? this.direction = -1 : this.direction = 1;
   }
 
   move() {
     if (this.status !== 'dying' && this.status !== 'hurt') {
-      if (!(this.top > this.playerPosY - 2
-        && this.top < this.playerPosY + 2)
-        || !(this.left > this.playerPosX - 2
-          && this.left < this.playerPosX + 2)) {
+      // if (!(this.top > this.playerPosY - 2
+      //   && this.top < this.playerPosY + 2)
+      //   || !(this.left > this.playerPosX - 2
+      //     && this.left < this.playerPosX + 2)) {
         this.top += this.speedY;
         this.left += this.speedX;
-      }
+      // }
     }
     this.animate(types[this.type][this.status].spriteMin, types[this.type][this.status].spriteMax);
   }
