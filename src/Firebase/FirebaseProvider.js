@@ -3,9 +3,11 @@ import 'firebase/database';
 
 import React, { Component } from 'react';
 
+import socketIOClient from 'socket.io-client';
+
 export const FirebaseContext = React.createContext();
 
-const config = {
+const fbconfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_DATABASE_URL,
@@ -15,10 +17,19 @@ const config = {
   appId: process.env.REACT_APP_APP_ID,
 };
 
+// const serverConf = {
+//   ip: process.env.REACT_APP_SERVER_IP,
+//   port: process.env.REACT_APP_SERVER_PORT,
+// }
+// const socket = socketIOClient(`${serverConf.ip}:${serverConf.port}`);
+const socket = socketIOClient('localhost:5000')
+
 class FirebaseProvider extends Component {
   constructor(props) {
     super(props);
-    firebase.initializeApp(config);
+    // Socket
+    // Firebase
+    firebase.initializeApp(fbconfig);
     this.scoresRef = firebase.database().ref('scores');
     this.lobbiesRef = firebase.database().ref('lobbies');
     this.gamesRef = firebase.database().ref('games');
@@ -64,9 +75,16 @@ class FirebaseProvider extends Component {
     this.scoresRef.on('value', (snapshot) => {
       this.setState({ scores: Object.values(snapshot.val()) });
     });
-    this.lobbiesRef.on('value', (snapshot => {
+    this.lobbiesRef.on('value', (snapshot) => {
       this.setState({ lobbies: snapshot.val() });
-    }));
+    });
+  }
+  
+  componentDidMount() {
+    socket.emit('create game');
+    socket.on('get game', data => console.log(data));
+    socket.emit('launch game');
+    socket.on('game info', data => console.log(data));
   }
 
   joinLobby = (key, name) => {

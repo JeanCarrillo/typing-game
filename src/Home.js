@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Monster from './Monster';
 import Scores from './Scores';
 import CoopLobbies from './CoopLobbies';
-import socketIOClient from 'socket.io-client';
+import withFirebaseContext from './Firebase/withFirebaseContext';
 
 function importAll(r) {
   return r.keys().map(r);
@@ -31,7 +31,6 @@ class Home extends Component {
     this.monsters = [];
     this.monstersGenerationTime = Date.now();
     this.monstersGenerationSpeed = 3000;
-    this.socket = socketIOClient('http://127.0.0.1:5000');
     this.state = {
       displayCoopMenu: false,
       leaderboard: false,
@@ -40,10 +39,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.socket.on('getGame', data => console.log(data));
-    this.socket.emit('createGame', this.monsters);
-    let monster = new Monster('', ['zombie']);
-    this.monsters.push(monster);
     this.homeLoop = setInterval(() =>
       this.loop(), 40);
   }
@@ -97,7 +92,6 @@ class Home extends Component {
   loop() {
     const now = Date.now();
     if (now - this.monstersGenerationTime > this.monstersGenerationSpeed) {
-      this.socket.emit('get monsters', this.monsters[0]);
       this.monstersGenerationTime = Date.now();
       this.generateMonster();
     }
@@ -175,4 +169,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default withFirebaseContext(Home);
