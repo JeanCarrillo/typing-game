@@ -24,10 +24,6 @@ class CoopLobby extends Component {
   }
 
   display() {
-
-  }
-
-  render() {
     const { launched } = this.state;
     const { lobbies } = this.props;
     const { name, host } = this.props.location.state;
@@ -56,31 +52,40 @@ class CoopLobby extends Component {
         this.setState({ launched: true });
       }
     }
+    if (!launched) {
+      return <div className="CoopLobby">
+        <h1>Players :</h1>
+        {
+          this.players.map((player, i) => (
+            <p key={`playerId-${i + 1}`}>{player.name}</p>
+          ))
+        }
+        {
+          host && this.canLaunch ?
+            <button onClick={() => this.launchGame(name, this.players[1].name, this.key)} >
+              Launch Game
+        </button>
+            : host ?
+              <p>Waiting for player...</p>
+              : null
+        }
+      </div>
+    } else {
+      return <CoopGame
+        gameKey={this.gameKey}
+        host={host}
+        name={name}
+        playerNum={this.playerNum}
+      />
+    }
+  }
+
+  render() {
     return (
-      !launched ?
-        <div className="CoopLobby">
-          <h1>Players :</h1>
-          {
-            this.players.map((player, i) => (
-              <p key={`playerId-${i + 1}`}>{player.name}</p>
-            ))
-          }
-          {
-            host && this.canLaunch ?
-              <button onClick={() => this.launchGame(name, this.players[1].name, this.key)} >
-                Launch Game
-              </button>
-              : host ?
-                <p>Waiting for player...</p>
-                : null
-          }
-        </div>
-        : <CoopGame
-          gameKey={this.gameKey}
-          host={host}
-          name={name}
-          playerNum={this.playerNum}
-        />
+      <div>
+        {this.display()}
+      </div>
+
     );
   }
 }

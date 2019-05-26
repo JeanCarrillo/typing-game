@@ -74,10 +74,8 @@ class CoopGame extends Component {
     }
     this.monsters = [];
     this.projectiles = [];
-    this.word = '';
     this.state = {
       word: '',
-      wordTyped: "",
       monstersKilled: 0,
       gameover: false,
     }
@@ -120,9 +118,9 @@ class CoopGame extends Component {
       for (let i = 0; i < this.monsters.length; i += 1) {
         if (this.monsters[i] !== "") {
           this.monsters[i].move();
-          if ((this.monsters[i].left > this.players[0].posX - 2 && this.monsters[i].left < this.players[0].posX + 2)
-            && (this.monsters[i].top > this.players[0].posY - 2 && this.monsters[i].top < this.players[0].posY + 2)) {
-            this.players[0].alive = false;
+          if ((this.monsters[i].left > this.players[this.playerNum].posX - 2 && this.monsters[i].left < this.players[this.playerNum].posX + 2)
+            && (this.monsters[i].top > this.players[this.playerNum].posY - 2 && this.monsters[i].top < this.players[this.playerNum].posY + 2)) {
+            this.players[this.playerNum].alive = false;
             clearInterval(this.gameRunning);
             this.handleGameOver();
           }
@@ -145,7 +143,7 @@ class CoopGame extends Component {
       const { updateGame, clearTempProjectiles } = this.props;
       if (currentGame.tempProjectiles) {
         for (let i = 0; i < currentGame.tempProjectiles.length; i += 1) {
-          const projectile = new Projectile('arrow', null, null, currentGame.tempProjectiles[i]);
+          const projectile = new Projectile('arrow', null, null, null, null, currentGame.tempProjectiles[i]);
           this.projectiles.push(projectile);
         }
         clearTempProjectiles(this.gameKey);
@@ -201,9 +199,9 @@ class CoopGame extends Component {
             if (monster.text[j].toLowerCase() === word.toLowerCase()) {
               this.setState({ word: "" });
               let direction;
-              monster.left > 50 ? direction = 1 : direction = -1;
+              monster.left > this.players[this.playerNum].posX ? direction = 1 : direction = -1;
               this.players[this.playerNum].updateStatus("shooting", direction);
-              let projectile = new Projectile('arrow', monster.left, monster.top);
+              let projectile = new Projectile('arrow', monster.left, monster.top, this.players[this.playerNum].posX, this.players[this.playerNum].posY);
               if (this.host === true) {
                 this.projectiles.push(projectile);
               } else {
@@ -236,10 +234,10 @@ class CoopGame extends Component {
     if (rdmType === "troll") {
       text = [this.getWord(), this.getWord(), this.getWord()];
     }
-    if (text) {
-      let monster = new Monster(text, rdmType);
-      this.monsters.push(monster);
-    }
+    // To do: replace with closest target
+    const rdmTarget = Math.floor(Math.random() * this.players.length);
+    let monster = new Monster(text, rdmType, this.players[rdmTarget].posX, this.players[rdmTarget].posY);
+    this.monsters.push(monster);
   }
 
   getWord() {

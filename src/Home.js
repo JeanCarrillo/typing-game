@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Monster from './Monster';
 import Scores from './Scores';
 import CoopLobbies from './CoopLobbies';
+import socketIOClient from 'socket.io-client';
 
 function importAll(r) {
   return r.keys().map(r);
@@ -30,13 +31,17 @@ class Home extends Component {
     this.monsters = [];
     this.monstersGenerationTime = Date.now();
     this.monstersGenerationSpeed = 3000;
+    this.socket = socketIOClient('http://127.0.0.1:5000');
     this.state = {
       displayCoopMenu: false,
       leaderboard: false,
+      test: false,
     };
   }
 
   componentDidMount() {
+    this.socket.on('getGame', data => console.log(data));
+    this.socket.emit('createGame', this.monsters);
     let monster = new Monster('', ['zombie']);
     this.monsters.push(monster);
     this.homeLoop = setInterval(() =>
@@ -56,27 +61,32 @@ class Home extends Component {
 
   menuDisplay() {
     const { leaderboard, displayCoopMenu } = this.state;
-    const mainMenu = <div>
-      <div className="buttonsContainer">
-        <Link to="/Solo">
-          <button>
-            Solo
+    const mainMenu =
+      <div>
+        <p>{this.state.test}</p>
+        <div className="buttonsContainer">
+          <Link to="/Solo">
+            <button>
+              Solo
           </button>
-        </Link>
-        <button disabled={true} onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
-          Online Coop
+          </Link>
+          <button onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
+            Online Coop
         </button>
-        <button onClick={() => this.setState({ leaderboard: !leaderboard })}>
-          Leaderboard
+        {/* <button disabled={true} onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
+            Online Coop
+        </button> */}
+          <button onClick={() => this.setState({ leaderboard: !leaderboard })}>
+            Leaderboard
         </button>
+        </div>
+        {/* <p style={{ position: 'absolute', top: '48%', left: '46%', fontSize: '1.3vw', zIndex: 10 }}>Coming soon!</p> */}
+        {
+          leaderboard ?
+            <Scores />
+            : null
+        }
       </div>
-      <p style={{ position: 'absolute', top: '48%', left: '46%', fontSize: '1.3vw', zIndex: 10 }}>Coming soon!</p>
-      {
-        leaderboard ?
-          <Scores />
-          : null
-      }
-    </div>
     if (displayCoopMenu) {
       return <CoopLobbies resetMenu={this.resetMenu} />
     } else {
@@ -87,6 +97,7 @@ class Home extends Component {
   loop() {
     const now = Date.now();
     if (now - this.monstersGenerationTime > this.monstersGenerationSpeed) {
+      this.socket.emit('get monsters', this.monsters[0]);
       this.monstersGenerationTime = Date.now();
       this.generateMonster();
     }
@@ -133,8 +144,8 @@ class Home extends Component {
         }
         {
           displayCoopMenu ?
-          <button className="BackButton" onClick={this.resetMenu}>Back</button>
-          : null
+            <button className="BackButton" onClick={this.resetMenu}>Back</button>
+            : null
         }
         {
           this.monsters.map((monster, i) => (
