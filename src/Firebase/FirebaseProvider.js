@@ -3,7 +3,7 @@ import 'firebase/database';
 
 import React, { Component } from 'react';
 
-// import socketIOClient from 'socket.io-client';
+import socketIOClient from 'socket.io-client';
 
 export const FirebaseContext = React.createContext();
 
@@ -22,52 +22,33 @@ const fbconfig = {
 //   port: process.env.REACT_APP_SERVER_PORT,
 // }
 // const socket = socketIOClient(`${serverConf.ip}:${serverConf.port}`);
-// const socket = socketIOClient('localhost:5000')
+const socket = socketIOClient('localhost:5000');
 
 class FirebaseProvider extends Component {
   constructor(props) {
     super(props);
-    // Socket
-    // Firebase
     firebase.initializeApp(fbconfig);
     this.scoresRef = firebase.database().ref('scores');
-    this.lobbiesRef = firebase.database().ref('lobbies');
-    this.gamesRef = firebase.database().ref('games');
-    this.db = firebase.database().ref();
-    // const lobbies = this.db.child('lobbies');
-    // lobbies.push({
-    //   'name': `test`,
-    //   'players': {
-    //     '1': {
-    //     'name': `test`,
-    //     'playerNum' : 1,
-    //     },
-    //   },
-    // });
-    // const lobbies = this.db.child("lobbies");           
-    // lobbies.push({
-    //   'name': 'Room 1',
-    //   'players': ['', ''],
-    //   'messages': {},
-    // });
     this.state = {
+      host: false,
+      playerId: null,
+      name: null,
+      gameId: null,
       scores: [],
       lobbies: [],
-      games: [],
-      currentGame: {
-        'players': [],
-        'monsters': [],
-        'projectiles': [],
-      },
+      currentGame: null,
       registerScore: this.registerScore,
-      removeLobby: this.removeLobby,
-      createLobby: this.createLobby,
-      joinLobby: this.joinLobby,
+      getLobbies: this.getLobbies,
       createGame: this.createGame,
-      updateGame: this.updateGame,
-      listenGameData: this.listenGameData,
-      clientAction: this.clientAction,
-      clearTempProjectiles: this.clearTempProjectiles,
+      joinGame: this.joinGame,
+      launchGame: this.launchGame,
+      clearInterval: this.clearInterval,
+      // removeLobby: this.removeLobby,
+      // createLobby: this.createLobby,
+      // updateGame: this.updateGame,
+      // listenGameData: this.listenGameData,
+      // clientAction: this.clientAction,
+      // clearTempProjectiles: this.clearTempProjectiles,
     }
   }
 
@@ -75,120 +56,62 @@ class FirebaseProvider extends Component {
     this.scoresRef.on('value', (snapshot) => {
       this.setState({ scores: Object.values(snapshot.val()) });
     });
-    this.lobbiesRef.on('value', (snapshot) => {
-      this.setState({ lobbies: snapshot.val() });
+  }
+
+  componentDidMount() {
+    socket.emit('ask player id');
+    socket.on('get player id', id => {
+      this.setState({ playerId: id });
+    });
+    // socket.emit('launch game');
+    // socket.on('game info', data => console.log(data));
+  }
+
+  clearInterval = () => {
+    socket.emit('clear interval');
+  }
+
+  getLobbies = () => {
+    socket.emit('get lobbies');
+    socket.on('lobbies list', lobbies => {
+      this.setState({ lobbies });
     });
   }
-  
-  // componentDidMount() {
-  //   socket.emit('create game');
-  //   socket.on('get game', data => console.log(data));
-  //   socket.emit('launch game');
-  //   socket.on('game info', data => console.log(data));
-  // }
 
-  joinLobby = (key, name) => {
-    firebase.database().ref('lobbies/' + key).once('value', (snapshot) => {
-      const players = snapshot.val().players
-      players.push({
-        'name': name,
-        'playerNum': 2,
-      })
-      firebase.database().ref('lobbies/' + key).update({
-        players,
+  joinGame = (gameId, playerId, name) => {
+    this.setState({ name });
+    socket.emit('join game', gameId, playerId, name);
+    socket.on('get game', (game) => {
+      this.setState({
+        currentGame: game,
+        gameId,
       });
     });
   }
 
-  createLobby = (name) => {
-    // const lobbies = this.db.child("lobbies");           
-    // lobbies.push({
-    //   'name': 'Room 1',
-    //   'players': ['', ''],
-    //   'messages': {},
-    // });
-    if (name.length > 0) {
-      const lobbies = this.db.child('lobbies');
-      lobbies.push({
-        'name': `${name}`,
-        'launched': false,
-        'players': {
-          '0': {
-            'name': `${name}`,
-            'playerNum': 1,
-          },
-        },
+  createGame = (name) => {
+    const { playerId } = this.state;
+    socket.emit('create game', name);
+    socket.on('get game', (game) => {
+      console.log(game)
+      this.setState({
+        currentGame: game,
+        gameId: playerId,
       });
-    }
+    });
+    this.setState({ name, host: true });
   }
 
-  removeLobby = (key) => {
-    this.lobbiesRef.child(`${key}`).remove();
-  }
-
-  createGame = (host, client, lobbyKey) => {
-    const games = this.db.child('games');
-    const gameRef = games.push({
-      'host': `${host}`,
-      'client': `${client}`,
-      'players': [],
-      'monsters': [],
-      'projectiles': [],
-    });
-    const gameKey = gameRef.getKey();
-    firebase.database().ref('lobbies/' + lobbyKey).update({
-      'launched': true,
-      'gameKey': `${gameKey}`
-    }, (err) => {
-      if (err) {
-        console.log('fail')
-      } else {
-        // console.log('success')
-      }
-    });
-    return gameKey;
-  }
-
-  updateGame = (key, monsters, projectiles, players) => {
-    firebase.database().ref('games/' + key).update({
-      // 'players': players,
-      'monsters': monsters,
-      'projectiles': projectiles,
-      // score,
-    }, (err) => {
-      if (err) {
-        console.log('fail')
-      } else {
-        // console.log('success')
-      }
-    });
+  launchGame = () => {
+    const { playerId } = this.state;
+    socket.emit('launch game', playerId);
   }
 
   clientAction = (key, projectile) => {
     firebase.database().ref('games/' + key).once('value', (snapshot) => {
-        firebase.database().ref('games/' + key).update({
-          'tempProjectiles': [projectile],
-        });
-    });
-    // firebase.database().ref('games/' + key).update({
-    //   'tempProjectiles': projectiles,
-    // }, (err) => {
-    //   if (err) {
-    //     console.log('fail')
-    //   } else {
-    //     // console.log('success')
-    //   }
-    // });
-  }
-
-  clearTempProjectiles = (key) => {
-      firebase.database().ref('games/' + key).update({'tempProjectiles':[]});
-  }
-
-
-  listenGameData = (key) => {
-    firebase.database().ref('games/' + key).on('value', (snapshot) => {
-      this.setState({ currentGame: snapshot.val() });
+      firebase.database().ref('games/' + key).update({
+        'tempProjectiles': [projectile],
+      });
     });
   }
 

@@ -41,6 +41,9 @@ class Home extends Component {
   componentDidMount() {
     this.homeLoop = setInterval(() =>
       this.loop(), 40);
+    const { clearInterval } = this.props;
+    clearInterval();
+
   }
 
   componentWillUnmount() {
@@ -65,12 +68,12 @@ class Home extends Component {
               Solo
           </button>
           </Link>
-          {/* <button onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
+          <button onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
+            Online Coop
+          </button>
+          {/* <button disabled={true} onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
             Online Coop
         </button> */}
-        <button disabled={true} onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
-            Online Coop
-        </button>
           <button onClick={() => this.setState({ leaderboard: !leaderboard })}>
             Leaderboard
         </button>

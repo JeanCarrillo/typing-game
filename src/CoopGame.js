@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
 import GameOver from './GameOver';
-// import Type from './Type';
-import wordsfr from './wordsfr.js';
 import withFirebaseContext from './Firebase/withFirebaseContext';
 import Monster from './Monster';
 import Player from './Player';
@@ -38,56 +35,23 @@ const images = {
 class CoopGame extends Component {
   constructor(props) {
     super(props);
-    this.playerNum = props.playerNum;
-    this.host = props.host;
-    this.name = props.name;
-    this.gameKey = props.gameKey;
-    const listenGameData = props.listenGameData;
-    listenGameData(this.gameKey);
     this.players = [];
-    if (this.host) {
-      this.vocabulary = wordsfr;
-      this.words = {};
-      for (let i = 0; i < this.vocabulary.length; i += 1) {
-        if (this.vocabulary[i] !== "" && this.vocabulary[i].length > 2) {
-          if (!this.words[this.vocabulary[i].length]) {
-            this.words[this.vocabulary[i].length] = [];
-          }
-          this.words[this.vocabulary[i].length].push(this.vocabulary[i]);
-        }
-      }
-      this.minWordLength = 3;
-      this.maxWordLength = this.minWordLength + 4;
-      this.monstersGenerationTime = Date.now();
-      this.monstersGenerationSpeed = 3000;
-      this.networkRefreshTime = Date.now();
-      this.networkRefreshSpeed = 0;
-      const player1 = new Player('archer', 0, this.name, 48, 39);
-      const player2 = new Player('archer', 1, 'test', 52, 39);
-      this.players.push(player1);
-      this.players.push(player2);
-    } else {
-      const player1 = new Player('archer', 0, 'test', 48, 39);
-      const player2 = new Player('archer', 1, this.name, 52, 39);
-      this.players.push(player1);
-      this.players.push(player2);
-    }
     this.monsters = [];
     this.projectiles = [];
     this.state = {
       word: '',
-      monstersKilled: 0,
+      score: 0,
       gameover: false,
     }
   }
 
   componentDidMount() {
-    this.gameRunning = setInterval(() =>
+    this.game = setInterval(() =>
       this.gameLoop(), 40);
   }
 
   componentWillUnmount() {
-    clearInterval(this.gameRunning);
+    clearInterval(this.game);
   }
 
   updateScore = (score) => {
@@ -99,46 +63,33 @@ class CoopGame extends Component {
 
   handleGameOver = () => {
     this.setState({ gameover: true });
-    clearInterval(this.gameRunning);
+    clearInterval(this.game);
   }
 
   gameLoop() {
     const { currentGame } = this.props;
     const now = Date.now();
     this.shoot();
-    if (this.host) {
-      this.checkCollisions();
-      // Monster generation call
-      if (now - this.monstersGenerationTime > this.monstersGenerationSpeed) {
-        this.monstersGenerationTime = Date.now();
-        this.generateMonster();
-        this.increaseDifficulty();
+    this.checkCollisions();
+    // Monsters move
+    for (let i = 0; i < this.monsters.length; i += 1) {
+      if (this.monsters[i].status !== 'dying'
+        && this.monsters[i].status !== 'hurt') {
+        this.monsters[i].move();
       }
-      // Monsters move
-      for (let i = 0; i < this.monsters.length; i += 1) {
-        if (this.monsters[i] !== "") {
-          this.monsters[i].move();
-          if ((this.monsters[i].left > this.players[this.playerNum].posX - 2 && this.monsters[i].left < this.players[this.playerNum].posX + 2)
-            && (this.monsters[i].top > this.players[this.playerNum].posY - 2 && this.monsters[i].top < this.players[this.playerNum].posY + 2)) {
-            this.players[this.playerNum].alive = false;
-            clearInterval(this.gameRunning);
-            this.handleGameOver();
-          }
-        }
-      }
-      // Projectiles move
-      if (this.projectiles) {
-        for (let i = 0; i < this.projectiles.length; i += 1) {
-          this.projectiles[i].move();
-        }
+    }
+    // Projectiles move
+    if (this.projectiles) {
+      for (let i = 0; i < this.projectiles.length; i += 1) {
+        this.projectiles[i].move();
       }
     }
     // Players actions
     for (let i = 0; i < this.players.length; i += 1) {
       this.players[i].action();
     }
-    if (this.host
-      && (now - this.networkRefreshTime > this.networkRefreshSpeed)) {
+
+    if (now - this.networkRefreshTime > this.networkRefreshSpeed) {
       this.networkRefreshTime = Date.now();
       const { updateGame, clearTempProjectiles } = this.props;
       if (currentGame.tempProjectiles) {
@@ -150,11 +101,7 @@ class CoopGame extends Component {
       }
       updateGame(this.gameKey, this.monsters, this.projectiles, this.players);
     }
-    if (!this.host) {
-      // this.players = currentGame.players ? currentGame.players : [];
-      this.monsters = currentGame.monsters ? currentGame.monsters : [];
-      this.projectiles = currentGame.projectiles ? currentGame.projectiles : [];
-    }
+
     this.setState({
       refresh: true,
     });
@@ -167,8 +114,6 @@ class CoopGame extends Component {
         if (this.monsters[j].alive === true) {
           if ((this.projectiles[i].top > this.monsters[j].top - 2 && this.projectiles[i].top < this.monsters[j].top + 2)
             && (this.projectiles[i].left > this.monsters[j].left - 2 && this.projectiles[i].left < this.monsters[j].left + 2)) {
-            const score = 1;
-            this.updateScore(score);
             this.projectiles.splice(i, 1);
             this.monsters[j].text.splice(0, 1);
             if (this.monsters[j].text.length === 0) {
@@ -202,47 +147,16 @@ class CoopGame extends Component {
               monster.left > this.players[this.playerNum].posX ? direction = 1 : direction = -1;
               this.players[this.playerNum].updateStatus("shooting", direction);
               let projectile = new Projectile('arrow', monster.left, monster.top, this.players[this.playerNum].posX, this.players[this.playerNum].posY);
-              if (this.host === true) {
-                this.projectiles.push(projectile);
-              } else {
-                const { clientAction } = this.props;
-                clientAction(this.gameKey, projectile);
-              }
+              this.projectiles.push(projectile);
+              const { clientAction } = this.props;
+              clientAction(this.gameKey, projectile);
+
             }
           }
         }
         return false;
       });
     }
-  }
-
-  increaseDifficulty() {
-    this.monstersGenerationSpeed -= 10;
-  }
-
-  generateMonster() {
-    let rdmType = Math.ceil(Math.random() * 100);
-    if (rdmType < 80) {
-      rdmType = "zombie";
-    } else {
-      rdmType = "troll";
-    }
-    let text = [];
-    if (rdmType === "zombie") {
-      text = [this.getWord()];
-    }
-    if (rdmType === "troll") {
-      text = [this.getWord(), this.getWord(), this.getWord()];
-    }
-    // To do: replace with closest target
-    const rdmTarget = Math.floor(Math.random() * this.players.length);
-    let monster = new Monster(text, rdmType, this.players[rdmTarget].posX, this.players[rdmTarget].posY);
-    this.monsters.push(monster);
-  }
-
-  getWord() {
-    const rdmLength = Math.floor(Math.random() * this.maxWordLength) + this.minWordLength;
-    return this.words[rdmLength][Math.floor(Math.random() * this.words[rdmLength].length)];
   }
 
   handleChange = (event) => {

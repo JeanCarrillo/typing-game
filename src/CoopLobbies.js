@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import withFirebaseContext from './Firebase/withFirebaseContext';
-import { Link } from 'react-router-dom';
+import CoopLobby from './CoopLobby';
 
 class CoopLobbies extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      choosed: false,
       name: "",
     };
+  }
+
+  componentWillMount() {
+    const { getLobbies } = this.props;
+    getLobbies();
   }
 
   handleChange = (e) => {
@@ -20,63 +26,65 @@ class CoopLobbies extends Component {
     e.preventDefault();
   }
 
-  render() {
-    const {
-      lobbies, removeLobby, joinLobby, createLobby,
-    } = this.props;
+  join(key) {
     const { name } = this.state;
-    const multiplayerLobbies = lobbies ?
-      Object.values(lobbies)
-      : [];
-    const multiplayerLobbiesKeys = lobbies ?
-      Object.keys(lobbies)
-      : [];
-    return (
-      <div className="CoopLobbies">
+    const { joinGame, playerId } = this.props;
+    joinGame(key, playerId, name);
+    this.setState({ choosed: true });
+  }
+
+  create() {
+    const { name } = this.state;
+    const { createGame } = this.props;
+    createGame(name);
+    this.setState({ choosed: true });
+  }
+
+  display() {
+    const {
+      lobbies,
+    } = this.props;
+    const { name, choosed } = this.state;
+    if (choosed) {
+      return <CoopLobby />
+    } else {
+      return <div className="CoopLobbies">
         <h1>Coop</h1>
         <form onSubmit={this.handleSubmit}>
           <label>
             Enter your name :
-            {' '}
+          {' '}
             <input onChange={this.handleChange} type="text" value={name} />
           </label>
         </form>
-        <Link to={{
-          pathname: `/Coop/${name}`,
-          state: {
-            name,
-            host: true,
-          }
-        }}>
-          <button onClick={() => createLobby(name)}>Create game</button>
-        </Link>
+        <button onClick={() => this.create()}>Create game</button>
         <h3>Current games : </h3>
         <div className="coopGames">
           {
-            multiplayerLobbies.map((lobby, i) => (
+            lobbies.map((lobby, i) => (
               <div key={`lobbyId-${i + 1}`}>
                 <p>
                   <span className="lobbyName">{lobby.name}</span>
                   {' : '}
                   <span className="lobbyPlayers">{Object.keys(lobby.players).length}/2</span>
-                  <button onClick={() => removeLobby(`${multiplayerLobbiesKeys[i]}`)}>Remove</button>
-                  <Link to={{
-                    pathname: `/Coop/${lobby.name}`,
-                    state: {
-                      name,
-                      host: false,
-                      key: `${multiplayerLobbiesKeys[i]}`,
-                    }
-                  }}>
-                    <button onClick={() => joinLobby(multiplayerLobbiesKeys[i], name)}>
+                    <button onClick={() => this.join(lobby.key)}>
                       Join
-                  </button>
-                  </Link>
+                </button>
                 </p>
               </div>
             ))
           }
         </div>
+      </div>
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        {
+          this.display()
+        }
       </div>
     );
   }

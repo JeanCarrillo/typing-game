@@ -16,8 +16,8 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/Solo" component={Game} />
-            <Route path="/Coop/:name" component={CoopLobby} />
-            <Route path="/Coop/Game/:name" component={CoopGame} />
+            <Route path="/Coop" component={CoopLobby} />
+            <Route path="/Coop/Game" component={CoopGame} />
             <Route path="/Scores" component={Scores} />
           </Switch>
         </div>

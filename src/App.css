@@ -115,6 +115,22 @@ body {
   margin: 0;
 } 
 
+.CoopLobby {
+  width: 25%;
+  padding: 1%;
+  margin: 0;
+  color: rgba(207, 27, 27, 0.952);
+  text-shadow: 0.2vw 0.2vw black;
+  font-size: 1.5vw;
+  font-family: 'Creepster', cursive;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20%;
+  left: 37%;
+  z-index: 10;
+}
+
 .coopGames button {
   margin: 0;
   padding:0.1vw 1vw;
