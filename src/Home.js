@@ -65,17 +65,17 @@ class Home extends Component {
               Solo
           </button>
           </Link>
-          <button onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
-            Online Coop
-        </button>
-        {/* <button disabled={true} onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
+          {/* <button onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
             Online Coop
         </button> */}
+        <button disabled={true} onClick={() => this.setState({ displayCoopMenu: true, leaderboard: false })}>
+            Online Coop
+        </button>
           <button onClick={() => this.setState({ leaderboard: !leaderboard })}>
             Leaderboard
         </button>
         </div>
-        {/* <p style={{ position: 'absolute', top: '48%', left: '46%', fontSize: '1.3vw', zIndex: 10 }}>Coming soon!</p> */}
+        <p style={{ position: 'absolute', top: '48%', left: '46%', fontSize: '1.3vw', zIndex: 10 }}>Coming soon!</p>
         {
           leaderboard ?
             <Scores />

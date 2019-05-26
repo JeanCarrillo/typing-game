@@ -3,7 +3,7 @@ import 'firebase/database';
 
 import React, { Component } from 'react';
 
-import socketIOClient from 'socket.io-client';
+// import socketIOClient from 'socket.io-client';
 
 export const FirebaseContext = React.createContext();
 
@@ -22,7 +22,7 @@ const fbconfig = {
 //   port: process.env.REACT_APP_SERVER_PORT,
 // }
 // const socket = socketIOClient(`${serverConf.ip}:${serverConf.port}`);
-const socket = socketIOClient('localhost:5000')
+// const socket = socketIOClient('localhost:5000')
 
 class FirebaseProvider extends Component {
   constructor(props) {
@@ -80,12 +80,12 @@ class FirebaseProvider extends Component {
     });
   }
   
-  componentDidMount() {
-    socket.emit('create game');
-    socket.on('get game', data => console.log(data));
-    socket.emit('launch game');
-    socket.on('game info', data => console.log(data));
-  }
+  // componentDidMount() {
+  //   socket.emit('create game');
+  //   socket.on('get game', data => console.log(data));
+  //   socket.emit('launch game');
+  //   socket.on('game info', data => console.log(data));
+  // }
 
   joinLobby = (key, name) => {
     firebase.database().ref('lobbies/' + key).once('value', (snapshot) => {
