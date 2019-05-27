@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import socketIOClient from 'socket.io-client';
 
@@ -22,7 +23,7 @@ const fbconfig = {
 //   port: process.env.REACT_APP_SERVER_PORT,
 // }
 // const socket = socketIOClient(`${serverConf.ip}:${serverConf.port}`);
-const socket = socketIOClient('localhost:5000');
+
 
 class FirebaseProvider extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class FirebaseProvider extends Component {
       createGame: this.createGame,
       joinGame: this.joinGame,
       launchGame: this.launchGame,
-      clearInterval: this.clearInterval,
+      // clearInterval: this.clearInterval,
       // removeLobby: this.removeLobby,
       // createLobby: this.createLobby,
       // updateGame: this.updateGame,
@@ -59,26 +60,28 @@ class FirebaseProvider extends Component {
   }
 
   componentDidMount() {
-    socket.emit('ask player id');
-    socket.on('get player id', id => {
-      this.setState({ playerId: id });
-    });
+    // socket.emit('ask player id');
+    // socket.on('get player id', id => {
+    //   this.setState({ playerId: id });
+    // });
     // socket.emit('launch game');
     // socket.on('game info', data => console.log(data));
   }
 
-  clearInterval = () => {
-    socket.emit('clear interval');
-  }
-
   getLobbies = () => {
-    socket.emit('get lobbies');
-    socket.on('lobbies list', lobbies => {
+    axios.get(`http://localhost:5000/getlobbies`)
+    .then(res => {
+      const lobbies = res.data;
       this.setState({ lobbies });
     });
+    // socket.emit('get lobbies');
+    // socket.on('lobbies list', lobbies => {
+    //   this.setState({ lobbies });
+    // });
   }
 
   joinGame = (gameId, playerId, name) => {
+    const socket = socketIOClient('localhost:5001');
     this.setState({ name });
     socket.emit('join game', gameId, playerId, name);
     socket.on('get game', (game) => {
@@ -90,19 +93,26 @@ class FirebaseProvider extends Component {
   }
 
   createGame = (name) => {
-    const { playerId } = this.state;
-    socket.emit('create game', name);
-    socket.on('get game', (game) => {
-      console.log(game)
-      this.setState({
-        currentGame: game,
-        gameId: playerId,
-      });
+    const socket = socketIOClient('localhost:5001');
+    // const { playerId } = this.state;
+    // socket.emit('create game', name);
+    // socket.on('get game', (game) => {
+    //   this.setState({
+    //     currentGame: game,
+    //     gameId: playerId,
+    //   });
+    // });
+    // this.setState({ name, host: true });
+    socket.connect();
+    axios.get(`http://localhost:5000/createlobby/${name}`)
+    .then(res => {
+      console.log(res)
+      this.setState({ name, host: true });
     });
-    this.setState({ name, host: true });
   }
 
   launchGame = () => {
+    const socket = socketIOClient('localhost:5001');
     const { playerId } = this.state;
     socket.emit('launch game', playerId);
   }

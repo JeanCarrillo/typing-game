@@ -41,9 +41,6 @@ class Home extends Component {
   componentDidMount() {
     this.homeLoop = setInterval(() =>
       this.loop(), 40);
-    const { clearInterval } = this.props;
-    clearInterval();
-
   }
 
   componentWillUnmount() {
