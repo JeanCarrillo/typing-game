@@ -17,11 +17,15 @@ class CoopLobby extends Component {
     if (currentGame && currentGame.launched) {
       // console.log(currentGame)
       return (
-        <Link to={{
-          pathname: `/Coop/${currentGame.name}`,
-        }}>
-          <button> Join the fight! </button>
-        </Link>
+        <div className="CoopLobby">
+          <Link to={{
+            pathname: `/Coop/${currentGame.name}`,
+          }}>
+            <button>
+              Join the fight!
+            </button>
+          </Link>
+        </div>
       );
     } else if (currentGame && !currentGame.launched) {
       const players = Object.values(currentGame.players)

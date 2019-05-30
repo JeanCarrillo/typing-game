@@ -3,7 +3,6 @@ import { Route, HashRouter, Switch } from 'react-router-dom';
 import FirebaseProvider from './Firebase/FirebaseProvider';
 import Home from './Home';
 import Game from './Game';
-import CoopLobby from './CoopLobby';
 import CoopGame from './CoopGame';
 import Scores from './Scores';
 import './App.css';
@@ -16,8 +15,7 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/Solo" component={Game} />
-            <Route path="/Coop" component={CoopLobby} />
-            <Route path="/Coop/Game" component={CoopGame} />
+            <Route path="/Coop" component={CoopGame} />
             <Route path="/Scores" component={Scores} />
           </Switch>
         </div>

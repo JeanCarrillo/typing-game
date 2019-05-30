@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 import socketIOClient from 'socket.io-client';
 
@@ -109,14 +109,6 @@ class FirebaseProvider extends Component {
     const { playerId } = this.state;
     console.log(playerId)
     socket.emit('launch game', playerId);
-  }
-
-  clientAction = (key, projectile) => {
-    firebase.database().ref('games/' + key).once('value', (snapshot) => {
-      firebase.database().ref('games/' + key).update({
-        'tempProjectiles': [projectile],
-      });
-    });
   }
 
   registerScore = (name, score) => {
