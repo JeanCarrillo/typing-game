@@ -28,8 +28,8 @@ class CoopLobbies extends Component {
 
   join(key) {
     const { name } = this.state;
-    const { joinGame, playerId } = this.props;
-    joinGame(key, playerId, name);
+    const { joinGame } = this.props;
+    joinGame(key, name);
     this.setState({ choosed: true });
   }
 

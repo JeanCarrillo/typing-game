@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import withFirebaseContext from './Firebase/withFirebaseContext';
-import CoopGame from './CoopGame';
+import { Link } from 'react-router-dom';
 
 class CoopLobby extends Component {
   constructor(props) {
@@ -9,14 +9,23 @@ class CoopLobby extends Component {
     this.state = {
       launched: false,
     };
+
   }
 
   display() {
     const { currentGame, launchGame, host } = this.props;
     if (currentGame && currentGame.launched) {
-      return <CoopGame />
+      // console.log(currentGame)
+      return (
+        <Link to={{
+          pathname: `/Coop/${currentGame.name}`,
+        }}>
+          <button> Join the fight! </button>
+        </Link>
+      );
     } else if (currentGame && !currentGame.launched) {
       const players = Object.values(currentGame.players)
+      console.log(currentGame)
       return (
         <div className="CoopLobby">
           <h1>{currentGame.name}</h1>
