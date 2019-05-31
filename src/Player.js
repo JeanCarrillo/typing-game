@@ -14,16 +14,12 @@ const types = {
 const animationDelay = 50;
 
 class Player {
-  constructor(type, num, name, posX, posY) {
-    if (num && name && posX && posY) {
+  constructor(type, posX, posY, name) {
+    if (name) {
       this.name = name;
-      this.posX = posX;
-      this.posY = posY;
-      this.num = num;
-    } else {
-      this.posX = 50;
-      this.posY = 39;
     }
+    this.posX = posX;
+    this.posY = posY;
     this.alive = true;
     this.type = type;
     this.status = "standing";

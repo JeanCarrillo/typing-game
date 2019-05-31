@@ -35,9 +35,15 @@ const images = {
 class CoopGame extends Component {
   constructor(props) {
     super(props);
+    const { currentGame } = this.props;
     this.players = [];
-    this.monsters = [];
-    this.projectiles = [];
+    console.log(currentGame)
+    for (let i = 0; i < currentGame.players; i += 1) {
+      const player = new Player('archer', 48 + i, 39, currentGame.players[i].name);
+      this.players.push(player);
+    }
+    this.monsters = currentGame.monsters;
+    this.projectiles = currentGame.projectiles;
     this.state = {
       word: '',
       score: 0,
@@ -48,10 +54,6 @@ class CoopGame extends Component {
   componentDidMount() {
     this.game = setInterval(() =>
       this.gameLoop(), 40);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.game);
   }
 
   updateScore = (score) => {
@@ -87,19 +89,6 @@ class CoopGame extends Component {
     // Players actions
     for (let i = 0; i < this.players.length; i += 1) {
       this.players[i].action();
-    }
-
-    if (now - this.networkRefreshTime > this.networkRefreshSpeed) {
-      this.networkRefreshTime = Date.now();
-      const { updateGame, clearTempProjectiles } = this.props;
-      if (currentGame.tempProjectiles) {
-        for (let i = 0; i < currentGame.tempProjectiles.length; i += 1) {
-          const projectile = new Projectile('arrow', null, null, null, null, currentGame.tempProjectiles[i]);
-          this.projectiles.push(projectile);
-        }
-        clearTempProjectiles(this.gameKey);
-      }
-      updateGame(this.gameKey, this.monsters, this.projectiles, this.players);
     }
 
     this.setState({

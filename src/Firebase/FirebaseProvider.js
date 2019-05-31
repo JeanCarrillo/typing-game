@@ -68,6 +68,7 @@ class FirebaseProvider extends Component {
     });
     const { gameId } = this.state;
     socket.on('get game', (game) => {
+      console.log(game)
       this.setState({
         currentGame: game,
         gameId,
@@ -107,7 +108,6 @@ class FirebaseProvider extends Component {
 
   launchGame = () => {
     const { playerId } = this.state;
-    console.log(playerId)
     socket.emit('launch game', playerId);
   }
 

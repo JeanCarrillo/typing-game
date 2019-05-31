@@ -23,7 +23,7 @@ class GameLoop extends Component {
     this.minWordLength = 3;
     this.maxWordLength = this.minWordLength + 4;
     this.players = [];
-    const player = new Player('archer');
+    const player = new Player('archer', 50, 39);
     this.players.push(player);
     this.monsters = [];
     this.projectiles = [];
