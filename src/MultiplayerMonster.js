@@ -47,7 +47,6 @@ const types = {
 class Monster {
   constructor(text, type, dirX, dirY, copy) {
     if (copy) {
-      this.text = copy.text;
       this.direction = copy.direction;
       this.alive = copy.alive;
       this.status = copy.status;
@@ -58,8 +57,6 @@ class Monster {
       this.speedY = copy.speedY;
       this.type = copy.type;
       this.img = copy.img;
-      this.sizeX = types[this.type].sizeX;
-      this.sizeY = types[this.type].sizeY;
     } else {
       this.text = text;
       this.alive = true;
@@ -127,13 +124,13 @@ class Monster {
 
   move() {
     if (this.status !== 'dying' && this.status !== 'hurt') {
-      if (!(this.top > this.playerPosY - 2
-        && this.top < this.playerPosY + 2)
-        || !(this.left > this.playerPosX - 2
-          && this.left < this.playerPosX + 2)) {
+      // if (!(this.top > this.playerPosY - 2
+      //   && this.top < this.playerPosY + 2)
+      //   || !(this.left > this.playerPosX - 2
+      //     && this.left < this.playerPosX + 2)) {
         this.top += this.speedY;
         this.left += this.speedX;
-      }
+      // }
     }
     this.animate(types[this.type][this.status].spriteMin, types[this.type][this.status].spriteMax);
   }

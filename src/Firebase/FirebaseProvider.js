@@ -43,13 +43,7 @@ class FirebaseProvider extends Component {
       createGame: this.createGame,
       joinGame: this.joinGame,
       launchGame: this.launchGame,
-      // clearInterval: this.clearInterval,
-      // removeLobby: this.removeLobby,
-      // createLobby: this.createLobby,
-      // updateGame: this.updateGame,
-      // listenGameData: this.listenGameData,
-      // clientAction: this.clientAction,
-      // clearTempProjectiles: this.clearTempProjectiles,
+      clientAction: this.clientAction,
     }
   }
 
@@ -118,6 +112,12 @@ class FirebaseProvider extends Component {
         'name': `${name}`,
         'score': `${score}`,
       });
+    }
+  }
+
+  clientAction = (action, playerNum, object) => {
+    if (action === 'projectile') {
+      socket.emit('player action', playerNum, object);
     }
   }
 

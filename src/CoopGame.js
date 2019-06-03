@@ -35,15 +35,16 @@ const images = {
 class CoopGame extends Component {
   constructor(props) {
     super(props);
-    const { currentGame } = this.props;
     this.players = [];
-    console.log(currentGame)
-    for (let i = 0; i < currentGame.players; i += 1) {
-      const player = new Player('archer', 48 + i, 39, currentGame.players[i].name);
-      this.players.push(player);
+    this.monsters = [];
+    this.projectiles = [];
+    this.updateGame();
+    const { playerId } = props;
+    for (let i = 0; i < this.players.length; i += 1) {
+      if (this.players[i].key === playerId) {
+        this.playerNum = i;
+      }
     }
-    this.monsters = currentGame.monsters;
-    this.projectiles = currentGame.projectiles;
     this.state = {
       word: '',
       score: 0,
@@ -54,6 +55,34 @@ class CoopGame extends Component {
   componentDidMount() {
     this.game = setInterval(() =>
       this.gameLoop(), 40);
+  }
+
+  updateGame = () => {
+    const { currentGame } = this.props;
+    if (currentGame.gameover) {
+      this.setState({ gameover: true });
+    }
+    for (let i = 0; i < currentGame.players.length; i += 1) {
+      if (!this.players[i]) {
+        const player = new Player('archer', currentGame.players[i].posX, currentGame.players[i].posY, currentGame.players[i].name, currentGame.players[i].key);
+        this.players.push(player);
+      }
+      if (i !== this.playerNum && this.players[i].status !== currentGame.players[i].status) {
+        this.players[i].updateStatus(currentGame.players[i].status);
+      }
+    }
+    for (let i = 0; i < currentGame.monsters.length; i += 1) {
+      if (!this.monsters[i]) {
+        const monster = new Monster(null, null, null, null, currentGame.monsters[i]);
+        this.monsters.push(monster);
+      }
+    }
+    for (let i = 0; i < currentGame.projectiles.length; i += 1) {
+      if (!this.projectiles[i]) {
+        const projectile = new Projectile(null, null, null, null, null, currentGame.projectiles[i]);
+        this.projectiles.push(projectile);
+      }
+    }
   }
 
   updateScore = (score) => {
@@ -69,8 +98,7 @@ class CoopGame extends Component {
   }
 
   gameLoop() {
-    const { currentGame } = this.props;
-    const now = Date.now();
+    this.updateGame();
     this.shoot();
     this.checkCollisions();
     // Monsters move
@@ -136,10 +164,9 @@ class CoopGame extends Component {
               monster.left > this.players[this.playerNum].posX ? direction = 1 : direction = -1;
               this.players[this.playerNum].updateStatus("shooting", direction);
               let projectile = new Projectile('arrow', monster.left, monster.top, this.players[this.playerNum].posX, this.players[this.playerNum].posY);
-              this.projectiles.push(projectile);
+              // this.projectiles.push(projectile);
               const { clientAction } = this.props;
-              clientAction(this.gameKey, projectile);
-
+              clientAction('projectile', this.playerNum, projectile);
             }
           }
         }
@@ -187,8 +214,8 @@ class CoopGame extends Component {
                   }}
                 />
                 {
-                  i === this.playerNum && player.alive
-                    ? <div className="Type">
+                  i === this.playerNum && player.alive ?
+                    <div className="Type">
                       <form onSubmit={this.handleSubmit}>
                         <input className="TypeTextBox" type="text" autoFocus={true} value={word} onChange={this.handleChange} />
                         <input type="submit" value="Submit" style={{ display: "none" }} />

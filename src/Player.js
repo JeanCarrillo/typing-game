@@ -14,9 +14,10 @@ const types = {
 const animationDelay = 50;
 
 class Player {
-  constructor(type, posX, posY, name) {
-    if (name) {
+  constructor(type, posX, posY, name, key) {
+    if (name && key) {
       this.name = name;
+      this.key = key;
     }
     this.posX = posX;
     this.posY = posY;
